@@ -2,16 +2,40 @@ package com.csye6220.carrentalsystem.model;
 
 import java.util.Date;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "reservations")
 public class Reservation {
+	
+	@Id
+    @GeneratedValue
     private int reservationID;
+	
+//	@OneToMany(mappedBy = "users", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private int userID;
+	
+//	@OneToMany(mappedBy = "cars", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private int carID;
+	
+	@Column(name = "start_date")
     private Date startDate;
+	
+	@Column(name = "end_date")
     private Date endDate;
+	
+	@Column(name = "status")
     private String status;
 
     
-    public Reservation() {}  //Default Constructor 
+    public Reservation() {}
 
     public int getReservationID() {
         return reservationID;

@@ -2,6 +2,8 @@ package com.csye6220.carrentalsystem.dao;
 
 import com.csye6220.carrentalsystem.model.Car;
 import com.csye6220.carrentalsystem.model.MaintenanceRecord;
+import com.csye6220.carrentalsystem.model.User;
+import com.csye6220.carrentalsystem.model.UserRole;
 
 import java.util.List;
 
@@ -16,4 +18,5 @@ public interface CarDAO {
 	List<Car> getCarsByAvailablity(boolean availability);
     
 	List<MaintenanceRecord> getMaintenanceRecords(int carID);
+
 }

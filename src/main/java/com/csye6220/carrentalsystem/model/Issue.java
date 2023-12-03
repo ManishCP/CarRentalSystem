@@ -1,13 +1,34 @@
 package com.csye6220.carrentalsystem.model;
 
+import jakarta.persistence.CascadeType; 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table (name = "issues")
 public class Issue {
-    private int issueID;
-    private int carID;
+	
+	@Id
+	@GeneratedValue
+	private int issueID;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+    private Car car;
+	
+	@Column(name = "description")
     private String description;
+	
+	@Column(name = "reported_by_UserID")
     private int reportedByUserID;
+	
+	@Column(name = "status")
     private String status;
 
-    public Issue() {} //default Constructor
+    public Issue() {} 
 
     public int getIssueID() {
         return issueID;
@@ -17,12 +38,12 @@ public class Issue {
         this.issueID = issueID;
     }
 
-    public int getCarID() {
-        return carID;
+    public Car getCar() {
+        return car;
     }
 
-    public void setCarID(int carID) {
-        this.carID = carID;
+    public void setCar(Car car) {
+        this.car = car;
     }
 
     public String getDescription() {

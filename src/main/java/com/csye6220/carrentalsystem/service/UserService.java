@@ -1,14 +1,15 @@
 package com.csye6220.carrentalsystem.service;
 
-import com.csye6220.carrentalsystem.dao.UserDAO;
+import com.csye6220.carrentalsystem.dao.UserDAO; 
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.csye6220.carrentalsystem.dao.UserDAO;
 import com.csye6220.carrentalsystem.model.User;
 
+@Service
 public class UserService {
 	
 	@Autowired

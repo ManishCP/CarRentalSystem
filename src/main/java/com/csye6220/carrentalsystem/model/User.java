@@ -1,30 +1,53 @@
 package com.csye6220.carrentalsystem.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "users")
 public class User {
-    private int userID;
-    private String userName;
+
+	@Id
+    @GeneratedValue
+    @Column(name="user_id")
+    private Long userId;
+	
+    private String username;
+    
+    private String email;
+    
     private String password;
-    private String emailID;
-    private String phoneNumber;
-    private String role; // customer, mechanic, rental agency
     
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
     
-    public User() {}  //Default Constructor 
+    @Column(name="phone_number")
+    private Long phoneNumber;
 
-    public int getUserID() {
-        return userID;
+    public User() {
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public User(String username, String email, String password, UserRole role,  Long phoneNumber) {
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.role = role;
+		this.phoneNumber = phoneNumber;
+	}
+
+	public Long getUserId() {
+        return userId;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -35,29 +58,27 @@ public class User {
         this.password = password;
     }
 
-    public String getEmailID() {
-        return emailID;
-    }
-
-    public void setEmailID(String emailID) {
-        this.emailID = emailID;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
-    
-}
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Long getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(Long phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+}

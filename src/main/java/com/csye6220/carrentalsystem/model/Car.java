@@ -1,19 +1,50 @@
 package com.csye6220.carrentalsystem.model;
 
-import java.util.List;
+import java.util.List;  
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "cars")
 public class Car {
+	
+	@Id
+    @GeneratedValue
+    @Column(name="car_id")
     private int carID;
+	
+	@Column(name="car_make")
     private String carMake;
+	
+	@Column(name="car_model")
     private String carModel;
+
+	@Column(name="car_year")
     private int carYear;
-    private String carType;
+
+	@Enumerated(EnumType.STRING)
+    private CarType carType;
+	
+	@Column(name="registration_number")
     private String registrationNumber;
+	
     private boolean availability;
+	
+    @Column(name="current_location")
     private String currentLocation;
-    private List<Issue> issues; 
     
-    public Car () {} //Default Constructor 
+    public Car () {}  
+    
+    public Car(int carID, String carMake, String carModel, int carYear, CarType carType, String registrationNumber, boolean availability, String currentLocation) {
+		this.carID = carID;
+		this.carMake = carMake;
+		this.carModel = carModel;
+		this.carYear = carYear;
+		this.carType = carType;
+		this.registrationNumber = registrationNumber;
+		this.availability = availability;
+		this.currentLocation = currentLocation;
+	}
 
     public int getCarID() {
         return carID;
@@ -47,11 +78,11 @@ public class Car {
         this.carYear = carYear;
     }
 
-    public String getCarType() {
+    public CarType getCarType() {
         return carType;
     }
 
-    public void setCarType(String carType) {
+    public void setCarType(CarType carType) {
         this.carType = carType;
     }
 
@@ -77,15 +108,6 @@ public class Car {
 
     public void setCurrentLocation(String currentLocation) {
         this.currentLocation = currentLocation;
-    }
-
-    public List<Issue> getIssues() {
-        return issues;
-    }
-
-    public void setIssues(List<Issue> issues) {
-        this.issues = issues;
-    }
-    
+    }  
     
 }

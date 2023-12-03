@@ -1,15 +1,36 @@
 package com.csye6220.carrentalsystem.model;
 
-import java.util.Date;
+import java.util.Date; 
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "maintenance_records")
 public class MaintenanceRecord {
+	
+	@Id
+    @GeneratedValue
     private int recordID;
-    private int carID;
-    private int mechanicID;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+    private Car car;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+    private Mechanic mechanic;
+	
+	@Column(name = "maintenance_description")
     private String maintenanceDescription;
+	
+	@Column(name = "date_performed")
     private Date datePerformed;
 
-    public MaintenanceRecord() {} //Default Constructor
+    public MaintenanceRecord() {} 
 
 	public int getRecordID() {
 		return recordID;
@@ -19,20 +40,20 @@ public class MaintenanceRecord {
 		this.recordID = recordID;
 	}
 
-	public int getCarID() {
-		return carID;
+	public Car getCar() {
+		return car;
 	}
 
-	public void setCarID(int carID) {
-		this.carID = carID;
+	public void setCar(Car car) {
+		this.car = car;
 	}
 
-	public int getMechanicID() {
-		return mechanicID;
+	public Mechanic getMechanic() {
+		return mechanic;
 	}
 
-	public void setMechanicID(int mechanicID) {
-		this.mechanicID = mechanicID;
+	public void setMechanic(Mechanic mechanic) {
+		this.mechanic = mechanic;
 	}
 
 	public String getMaintenanceDescription() {

@@ -2,41 +2,80 @@ package com.csye6220.carrentalsystem.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 import com.csye6220.carrentalsystem.model.User;
+import com.csye6220.carrentalsystem.util.HibernateUtil;
 
-@Component
+@Repository
 public class UserDAOImpl implements UserDAO {
 
+	private SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
+	
 	@Override
 	public void createUser(User user) {
-		// TODO Auto-generated method stub
-
+		try(Session session = sessionFactory.openSession()){
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            session.persist(user);
+            transaction.commit();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 	}
 
 	@Override
 	public User getUserByID(int userID) {
-		// TODO Auto-generated method stub
-		return null;
+		try(Session session = sessionFactory.openSession()){
+            User user = session.get(User.class, userID);
+            return user;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
 	}
 
 	@Override
 	public void update(User user) {
-		// TODO Auto-generated method stub
-
+		try(Session session = sessionFactory.openSession()){
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            session.merge(user);
+            transaction.commit();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 	}
 
 	@Override
 	public void delete(int userID) {
-		// TODO Auto-generated method stub
-
+		try(Session session = sessionFactory.openSession()){
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            User user = session.get(User.class, userID);
+            session.remove(user);
+            transaction.commit();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 	}
 
 	@Override
 	public List<User> getAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		try(Session session = sessionFactory.openSession()){
+            List<User> boardList = session.createQuery("from Board",User.class).list();
+            return boardList;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
 	}
 
 }

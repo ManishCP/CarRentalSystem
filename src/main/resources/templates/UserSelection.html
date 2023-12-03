@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" layout:decorate="layouts/defaultLayout">
+
+<body>
+	<div class="container my-5" layout:fragment="content">
+	
+
+<h1>User Login</h1>
+
+
+
+<form id="roleSelectiona" th:action="@{/users/customer}" method="post">
+	<p>Select if you're a customer</p>
+	<input type="submit" value="customer" />
+</form>
+
+<form id="roleSelectionb" th:action="@{/users/RentalAgency}" method="post">
+	<p>Select if you're a RentalAgency</p>
+	<input type="submit" value="RentalAgency" />
+</form>
+
+<form id="roleSelectionc" th:action="@{/users/Mechanic}" method="post">
+	<p>Select if you're a Mechanic</p>
+	<input type="submit" value="Mechanic" />
+</form>
+</body>
+</html>

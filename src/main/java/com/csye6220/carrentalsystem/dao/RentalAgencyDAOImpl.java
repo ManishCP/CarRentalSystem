@@ -1,46 +1,98 @@
 package com.csye6220.carrentalsystem.dao;
 
-import java.util.List;
+import java.util.List; 
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
 import com.csye6220.carrentalsystem.model.Car;
 import com.csye6220.carrentalsystem.model.RentalAgency;
+import com.csye6220.carrentalsystem.util.HibernateUtil;
 
+@Repository
 public class RentalAgencyDAOImpl implements RentalAgencyDAO {
+	
+	private SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
 
 	@Override
 	public void createRentalAgency(RentalAgency agency) {
-		// TODO Auto-generated method stub
-
+		try(Session session = sessionFactory.openSession()){
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            session.persist(agency);
+            transaction.commit();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 	}
 
 	@Override
 	public RentalAgency getAgencyByID(int agencyID) {
-		// TODO Auto-generated method stub
-		return null;
+		try(Session session = sessionFactory.openSession()){
+            RentalAgency agency = session.get(RentalAgency.class, agencyID);
+            return agency;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
 	}
 
 	@Override
 	public void updateAgency(RentalAgency agency) {
-		// TODO Auto-generated method stub
-
+		try(Session session = sessionFactory.openSession()){
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            session.merge(agency);
+            transaction.commit();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 	}
 
 	@Override
 	public void deleteAgency(int agencyID) {
-		// TODO Auto-generated method stub
-
+		try(Session session = sessionFactory.openSession()){
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            RentalAgency agency = getAgencyByID(agencyID);
+            session.remove(agency);
+            transaction.commit();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 	}
 
 	@Override
 	public List<RentalAgency> getAllAgencies() {
-		// TODO Auto-generated method stub
-		return null;
+		try(Session session = sessionFactory.openSession()){
+            List<RentalAgency> boardList = session.createQuery("from Board", RentalAgency.class).list();
+            return boardList;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
 	}
 
 	@Override
 	public List<Car> getAvailableCarsByAgency(int agencyID) {
-		// TODO Auto-generated method stub
-		return null;
+		try(Session session = sessionFactory.openSession()){
+            String queryString = "FROM Comment WHERE c.card.id = :cardId";
+            Query query = session.createQuery(queryString, RentalAgency.class);
+            query.setParameter("cardId", agencyID);
+            return query.list();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
 	}
 
 }
