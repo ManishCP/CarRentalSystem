@@ -72,8 +72,7 @@ public class RentalAgencyDAOImpl implements RentalAgencyDAO {
 	@Override
 	public List<RentalAgency> getAllAgencies() {
 		try(Session session = sessionFactory.openSession()){
-            List<RentalAgency> boardList = session.createQuery("from Board", RentalAgency.class).list();
-            return boardList;
+			return session.createQuery("from RentalAgency",RentalAgency.class).list();
         }
         catch (Exception e){
             e.printStackTrace();

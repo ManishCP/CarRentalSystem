@@ -154,21 +154,6 @@ public class CarDAOImpl implements CarDAO {
     public CarDAOImpl() {
         this.sessionFactory = HibernateUtil.buildSessionFactory();
     }
-    
-//	@Override
-//	public void saveUser(User user) {
-//		Transaction transaction = null;
-//        try (Session session = sessionFactory.openSession()) {
-//            transaction = session.beginTransaction();
-//            session.persist(user);
-//            transaction.commit();
-//        } catch (Exception e) {
-//            if (transaction != null) {
-//                transaction.rollback();
-//            }
-//            e.printStackTrace();
-//        }
-//	}
 
 	@Override
 	public void createCar(Car car) {
@@ -226,7 +211,7 @@ public class CarDAOImpl implements CarDAO {
 	@Override
 	public List<Car> getAllCars() {
 		try(Session session = sessionFactory.openSession()){
-			return session.createQuery("from Board",Car.class).list();
+			return session.createQuery("from Car",Car.class).list();
         }
         catch (Exception e){
             e.printStackTrace();

@@ -35,8 +35,7 @@ public class Car {
     
     public Car () {}  
     
-    public Car(int carID, String carMake, String carModel, int carYear, CarType carType, String registrationNumber, boolean availability, String currentLocation) {
-		this.carID = carID;
+    public Car(String carMake, String carModel, int carYear, CarType carType, String registrationNumber, boolean availability, String currentLocation) {
 		this.carMake = carMake;
 		this.carModel = carModel;
 		this.carYear = carYear;

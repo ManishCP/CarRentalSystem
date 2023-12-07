@@ -6,6 +6,7 @@ D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\dao\R
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\ServletInitializer.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\dao\UserDAOImpl.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\service\ReservationService.java
+D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\controller\HomeController.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\model\Car.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\config\ThymeLeafConfig.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\controller\RentalAgencyController.java

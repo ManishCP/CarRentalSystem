@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Rental Agencies</title>
+</head>
+<body>
+    <h2>All Rental Agencies</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Agency ID</th>
+                <th>Agency Name</th>
+                <th>Location</th>
+                <th>Contact Details</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="rentalAgency : ${rentalAgencies}">
+                <td th:text="*{rentalAgency.agencyID}"></td>
+                <td th:text="*{rentalAgency.agencyName}"></td>
+                <td th:text="*{rentalAgency.location}"></td>
+                <td th:text="*{rentalAgency.contactDetails}"></td>
+                <td>
+                    <a th:href="@{/rental-agencies/{agencyID}(agencyID=${rentalAgency.agencyID})}">View</a>
+                    <span> | </span>
+                    <a th:href="@{/rental-agencies/edit/{agencyID}(agencyID=${rentalAgency.agencyID})}">Edit</a>
+                    <span> | </span>
+                    <a th:href="@{/rental-agencies/delete/{agencyID}(agencyID=${rentalAgency.agencyID})}">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

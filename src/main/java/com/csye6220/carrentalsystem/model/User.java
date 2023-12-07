@@ -9,7 +9,7 @@ public class User {
 	@Id
     @GeneratedValue
     @Column(name="user_id")
-    private Long userId;
+    private Long userID;
 	
     private String username;
     
@@ -34,12 +34,12 @@ public class User {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public Long getUserId() {
-        return userId;
+	public Long getUserID() {
+        return userID;
     }
 
     public void setUserId(Long userId) {
-        this.userId = userId;
+        this.userID = userID;
     }
 
     public String getUsername() {

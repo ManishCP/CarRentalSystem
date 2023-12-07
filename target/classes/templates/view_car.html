@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Car Details</title>
+</head>
+<body>
+    <h2>Car Details</h2>
+    <div th:object="${car}">
+        <p>Make: <span th:text="*{carMake}"></span></p>
+        <p>Model: <span th:text="*{carModel}"></span></p>
+        <p>Year: <span th:text="*{carYear}"></span></p>
+        <p>Type: <span th:text="*{carType}"></span></p>
+        <p>Registration Number: <span th:text="*{registrationNumber}"></span></p>
+        <p>Availability: <span th:text="*{availability}"></span></p>
+        <p>Current Location: <span th:text="*{currentLocation}"></span></p>
+    </div>
+</body>
+</html>

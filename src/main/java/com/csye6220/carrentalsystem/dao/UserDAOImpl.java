@@ -6,6 +6,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
+
+import com.csye6220.carrentalsystem.model.Car;
 import com.csye6220.carrentalsystem.model.User;
 import com.csye6220.carrentalsystem.util.HibernateUtil;
 
@@ -69,8 +71,7 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public List<User> getAllUsers() {
 		try(Session session = sessionFactory.openSession()){
-            List<User> boardList = session.createQuery("from Board",User.class).list();
-            return boardList;
+			return session.createQuery("from User",User.class).list();
         }
         catch (Exception e){
             e.printStackTrace();

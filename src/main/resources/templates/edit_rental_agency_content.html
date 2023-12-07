@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Rental Agency</title>
+</head>
+<body>
+    <h2>Edit Rental Agency</h2>
+
+    <form th:action="@{/rental-agencies/edit}" method="post">
+        <input type="hidden" id="agencyID" name="agencyID" th:value="${agencyId}" />
+
+        <label for="agency-name">Agency Name:</label>
+        <input type="text" id="agency-name" name="agency-name" th:value="${agency.agencyName}" required />
+
+        <br/>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" th:value="${agency.location}" required />
+
+        <br/>
+
+        <label for="contact-details">Contact Details:</label>
+        <input type="text" id="contact-details" name="contact-details" th:value="${agency.contactDetails}" required />
+
+        <br/>
+
+        <button type="submit">Update Rental Agency</button>
+    </form>
+    
+    <br/>
+    
+    <a th:href="@{/rental-agencies/all}">Back to Rental Agencies</a>
+</body>
+</html>

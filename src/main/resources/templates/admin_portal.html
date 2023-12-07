@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Portal - Rental Agencies</title>
+</head>
+<body>
+    <h2>Welcome to Admin Portal</h2>
+
+    <h3>Rental Agencies</h3>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Agency ID</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Contact Details</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="agency : ${rentalAgencies}">
+                <td th:text="${agency.agencyName}"></td>
+                <td th:text="${agency.location}"></td>
+                <td th:text="${agency.contactDetails}"></td>
+                <td>
+                    <a th:href="@{/rental-agencies/{agencyID}(agencyID=${agency.agencyID})}">View</a>
+                    <span> | </span>
+                    <a th:href="@{/rental-agencies/edit/{agencyID}(agencyID=${agency.agencyID})}">Edit</a>
+                    <span> | </span>
+                    <a th:href="@{/rental-agencies/delete/{agencyID}(agencyID=${agency.agencyID})}">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Add New Rental Agency</h3>
+    <form th:action="@{/rental-agencies/add}" method="post">
+        <label for="agency-name">Agency Name:</label>
+        <input type="text" id="agency-name" name="agency-name" required />
+
+        <br/>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required />
+
+        <br/>
+
+        <label for="contact-details">Contact Details:</label>
+        <input type="text" id="contact-details" name="contact-details" required />
+
+        <br/>
+        <button type="submit">Add Rental Agency</button>
+    </form-->
+</body>
+</html>

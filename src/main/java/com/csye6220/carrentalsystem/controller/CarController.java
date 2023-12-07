@@ -1,29 +1,130 @@
 package com.csye6220.carrentalsystem.controller;
 
-import java.util.List;
-import org.springframework.http.ResponseEntity;
+import java.util.List;  
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-/**
- *
- * @author manis
- * 
- * CarController:
- * manage car-related functionalities - listing cars; availability; reservations
- */
+import com.csye6220.carrentalsystem.model.Car;
+import com.csye6220.carrentalsystem.model.CarType;
+import com.csye6220.carrentalsystem.model.MaintenanceRecord;
+import com.csye6220.carrentalsystem.service.CarService;
+
+
 @Controller
 @RequestMapping("/cars")
 public class CarController {
-
-//    private final CarService carDAO;
-
-    public CarController() {
-//        this.carDAO = carDAO;
+	 
+	@Autowired
+	private CarService carService;
+	
+	@GetMapping("/add") 
+	public String getCarAddForm() {
+		return "add_car";
+	}
+	
+	@PostMapping("/add")
+    public String addCar(
+            @RequestParam(name = "car-make", required = false) String carMake,
+            @RequestParam(name = "car-model", required = false) String carModel,
+            @RequestParam(name = "car-year", required = false) int carYear,
+            @RequestParam(name = "car-type", required = false) String carType,
+            @RequestParam(name = "registration-number", required = false) String registrationNumber,
+            @RequestParam(name = "availability", required = false) boolean availability,
+            @RequestParam(name = "current-location", required = false) String currentLocation
+    ) {
+        Car car = new Car(carMake, carModel, carYear, CarType.valueOf(carType), registrationNumber, availability, currentLocation);
+        carService.createCar(car);
+        return "redirect:/cars/all";
     }
 
-   
+    @GetMapping("/{carID}")
+    public ModelAndView getCarByID(@PathVariable int carID) {
+        ModelAndView modelAndView = new ModelAndView("view_car");
+        Car car = null;
+		try {
+			car = carService.getCarByID(carID);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        modelAndView.addObject("car", car);
+        return modelAndView;
+    }
+    
+    
+    @GetMapping("/edit/{carID}") 
+    public String editCarForm(@PathVariable int carID, Model model) {
+        Car car = carService.getCarByID(carID);
+        model.addAttribute("carId", carID);
+        model.addAttribute("car", car);
+        return "edit_car_content";
+    }
+
+    @PostMapping("edit")
+    public String editCar(
+    		@RequestParam(name = "car-id") int carId,
+            @RequestParam(name = "car-make", required = false) String carMake,
+            @RequestParam(name = "car-model", required = false) String carModel,
+            @RequestParam(name = "car-year", required = false) int carYear,
+            @RequestParam(name = "car-type", required = false) String carType,
+            @RequestParam(name = "registration-number", required = false) String registrationNumber,
+            @RequestParam(name = "availability", required = false) boolean availability,
+            @RequestParam(name = "current-location", required = false) String currentLocation,
+            RedirectAttributes redirectAttributes
+    ) {
+        Car car = new Car(carMake, carModel, carYear, CarType.valueOf(carType), registrationNumber, availability, currentLocation);
+        car.setCarID(carId);
+        carService.update(car);
+        return "redirect:/cars/all";
+    }
+
+    @GetMapping("/delete/{carID}")
+    public String deleteCar(@PathVariable int carID) {
+        Car car = carService.getCarByID(carID);
+        carService.delete(car);
+        return "redirect:/cars/all";
+    }
+
+    @GetMapping("/all")
+    public ModelAndView getAllCars() {
+        ModelAndView modelAndView = new ModelAndView("view_all_cars");
+        List<Car> cars = carService.getAllCars();
+        modelAndView.addObject("cars", cars);
+        return modelAndView;
+    }
+
+    @GetMapping("/byLocation")
+    public ModelAndView getCarsByLocation(@RequestParam String location) {
+        ModelAndView modelAndView = new ModelAndView("view_cars_by_location");
+        List<Car> cars = carService.getCarsByLocation(location);
+        modelAndView.addObject("cars", cars);
+        return modelAndView;
+    }
+
+    @GetMapping("/byAvailability")
+    public ModelAndView getCarsByAvailability(@RequestParam boolean availability) {
+        ModelAndView modelAndView = new ModelAndView("view_cars_by_availability");
+        List<Car> cars = carService.getCarsByAvailablity(availability);
+        modelAndView.addObject("cars", cars);
+        return modelAndView;
+    }
+
+    @GetMapping("/maintenanceRecords")
+    public ModelAndView getMaintenanceRecords(@RequestParam int carID) {
+        ModelAndView modelAndView = new ModelAndView("view_maintenance_records");
+        List<MaintenanceRecord> maintenanceRecords = carService.getMaintenanceRecords(carID);
+        modelAndView.addObject("maintenanceRecords", maintenanceRecords);
+        return modelAndView;
+    }
 
 }
