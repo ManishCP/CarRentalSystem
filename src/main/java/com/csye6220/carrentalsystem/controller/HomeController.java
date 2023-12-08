@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 	@GetMapping("/")
 	public String userSelectionForm() {
-		return"homePage";
+		return"login_page";
 	}
 
 	@PostMapping("/user")
 	public String CustomerLogin() {
-		return "CustomerPortal";
+		return "customer_portal";
 	}
 	
 	@PostMapping("/agencyStaff")
 	public String RentalAgencyLogin() {
-		return "RentalAgencyPortal";
+		return "rental_agency_portal";
 	}
 	
 	@PostMapping("/continue-as-guest")

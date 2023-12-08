@@ -1,56 +1,89 @@
-<!--DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" layout:decorate="layouts/defaultLayout">
-
-<body>
-	<div class="container my-5" layout:fragment="content">
-	
-
-<h1>Rental Agency Login Portal</h1>
-
-<form id="Carsactions" th:action="@{/users/customer}" method="post">
-	<button type="submit">Cars Control</button>
-</form>
-
-
-</body>
-</html-->
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <title>Car Controls Rental Agency System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>User Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom styles -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .dashboard-container {
+            max-width: 800px;
+            margin: auto;
+            margin-top: 50px;
+        }
+        .welcome-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Rental Agency can perform the following car controls</h2>
+	
+	
+<div class="container dashboard-container">
+    <div class="welcome-section">
+        <h2>Welcome, [Username], Rental Agency</h2>
+        <a href="/edit/{agencyID}" class="btn btn-primary">Update Profile</a>
+    </div>
+    <hr>
+    <h3>Car Options</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>View All Cars</h4>
+            <p>View all the cars in your fleet</p>
+            <a href="/cars/all" class="btn btn-primary">View All Cars</a>
+            <h4>Location</h4>
+            <p>View all the cars in your fleet Specific to Location</p>
+            <a href="/cars/all" class="btn btn-primary">View</a>
+        </div>
+        <div class="col-md-6">
+            <h4>Add Cars</h4>
+            <p>Add Cars to your fleet</p>
+            <a href="/cars/add" class="btn btn-primary">Add</a>
+        </div>
+        <div class="col-md-6">
+            <h4>Delete Cars</h4>
+            <p>Delete Cars from your fleet</p>
+            <a href="/cars/delete" class="btn btn-primary">Delete</a>
+        </div>
+        <div class="col-md-6">
+            <h4>Edit Cars</h4>
+            <p>Edit Cars from your fleet</p>
+            <a href="/cars/add" class="btn btn-primary">Edit</a>
+        </div>
+        
+    </div>
+    <hr>
+    <h3>Reserved Cars</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>View Cars</h4>
+            <p>View All cars which are in Use</p>
+            <a href="/cars/byLocation" class="btn btn-primary">Search by Location</a>
+            <p>View All User details of the cars which are being used</p>
+            <a href="/cars/byLocation" class="btn btn-primary">View Users</a>
+        </div>
+        <div class="col-md-6">
+            <h4>Search for Car Availability</h4>
+            <p>Find cars based on their Avaiability.</p>
+            <a href="/cars/byAvailability" class="btn btn-primary">Search by Availability</a>
+        </div>
+    </div>
+    <hr>
+    
+</div>
 
-    <p>Please choose your option:</p>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <ul>
-		<li>
-			<form th:action="@{/cars/add}" method="post">
-				<button type="submit">Add Cars</button>
-			</form>
-		</li>
-        <li>
-			<form th:action="@{/cars/all}" method="post">
-				<button type="submit">View All cars</button>
-			</form>
-		</li>
-        <li>
-			<form th:action="@{/continue-as-guest}" method="post">
-			<button type="submit">View Cars by locations</button>
-			</form>
-		</li>
-		<li>
-			<form th:action="@{/continue-as-guest}" method="post">
-			<button type="submit"></button>
-			</form>
-		</li>
-		<li>
-			<form th:action="@{/continue-as-guest}" method="post">
-			<button type="submit">View Cars by locations</button>
-			</form>
-		</li>
-    </ul>
 </body>
 </html>

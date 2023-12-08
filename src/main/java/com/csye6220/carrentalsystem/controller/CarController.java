@@ -1,15 +1,13 @@
 package com.csye6220.carrentalsystem.controller;
 
-import java.util.List;  
+import java.util.List;   
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.csye6220.carrentalsystem.model.Car;
 import com.csye6220.carrentalsystem.model.CarType;
-import com.csye6220.carrentalsystem.model.MaintenanceRecord;
 import com.csye6220.carrentalsystem.service.CarService;
 
 
@@ -116,14 +113,6 @@ public class CarController {
         ModelAndView modelAndView = new ModelAndView("view_cars_by_availability");
         List<Car> cars = carService.getCarsByAvailablity(availability);
         modelAndView.addObject("cars", cars);
-        return modelAndView;
-    }
-
-    @GetMapping("/maintenanceRecords")
-    public ModelAndView getMaintenanceRecords(@RequestParam int carID) {
-        ModelAndView modelAndView = new ModelAndView("view_maintenance_records");
-        List<MaintenanceRecord> maintenanceRecords = carService.getMaintenanceRecords(carID);
-        modelAndView.addObject("maintenanceRecords", maintenanceRecords);
         return modelAndView;
     }
 

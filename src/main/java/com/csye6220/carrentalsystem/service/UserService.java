@@ -34,5 +34,13 @@ public class UserService {
 	public List<User> getAllUsers() {
 		return userDAO.getAllUsers();
 	}
+	
+	public User getUserByEmail(String email) {
+		return userDAO.getUserByEmail(email);
+	}
+	
+	public User getUserByUsername(String username) {
+		return userDAO.getUserByUsername(username);
+	}
 
 }

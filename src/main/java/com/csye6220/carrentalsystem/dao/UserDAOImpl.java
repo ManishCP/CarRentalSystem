@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.csye6220.carrentalsystem.model.Car;
@@ -77,6 +78,23 @@ public class UserDAOImpl implements UserDAO {
             e.printStackTrace();
             return null;
         }
+	}
+
+		
+	@Override
+    public User getUserByEmail(String email) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        return currentSession.createQuery("FROM User WHERE email = :email", User.class)
+                .setParameter("email", email)
+                .uniqueResult();
+    }
+
+	@Override
+	public User getUserByUsername(String username) {
+		Session currentSession = sessionFactory.getCurrentSession();
+        return currentSession.createQuery("FROM User WHERE username = :username", User.class)
+                .setParameter("username", username)
+                .uniqueResult();
 	}
 
 }

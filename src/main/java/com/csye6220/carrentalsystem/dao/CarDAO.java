@@ -1,9 +1,6 @@
 package com.csye6220.carrentalsystem.dao;
 
-import com.csye6220.carrentalsystem.model.Car;
-import com.csye6220.carrentalsystem.model.MaintenanceRecord;
-import com.csye6220.carrentalsystem.model.User;
-import com.csye6220.carrentalsystem.model.UserRole;
+import com.csye6220.carrentalsystem.model.Car; 
 
 import java.util.List;
 
@@ -17,6 +14,20 @@ public interface CarDAO {
 	List<Car> getCarsByLocation(String location);
 	List<Car> getCarsByAvailablity(boolean availability);
     
-	List<MaintenanceRecord> getMaintenanceRecords(int carID);
-
 }
+
+//<form th:action="@{/users/signup/customer}" method="post">
+//
+//<div class="form-group">
+//<label for="Location">Filter by Location:</label>
+//<select id="Location-type" name="Location" required>
+//    <option th:each="type : ${T(com.csye6220.carrentalsystem.model.CarType).values()}"
+//            th:value="${type}" th:text="${type}" th:selected="${type == car.carType}"></option>
+//</select>
+//</div>
+//
+//<div class="form-group">
+//<label for="registration-number">Registration Number:</label>
+//<input type="text" id="registration-number" name="registration-number" th:value="${car.registrationNumber}" required />
+//</div>
+//</form>

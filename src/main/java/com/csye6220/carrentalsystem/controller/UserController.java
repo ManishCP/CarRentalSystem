@@ -33,6 +33,11 @@ public class UserController {
 		return "user_details_entering";
 	}
 	
+	@PostMapping("/signup/customer") 
+	public String getSignupCustomerForm() {
+		return "signup_customer";
+	}
+
     @PostMapping("/create")
     public String createUser(
             @RequestParam(name = "username") String username,

@@ -130,7 +130,7 @@
 
 package com.csye6220.carrentalsystem.dao;
 
-import java.util.List;
+import java.util.List; 
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -139,10 +139,6 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.csye6220.carrentalsystem.model.Car;
-import com.csye6220.carrentalsystem.model.Issue;
-import com.csye6220.carrentalsystem.model.MaintenanceRecord;
-import com.csye6220.carrentalsystem.model.User;
-import com.csye6220.carrentalsystem.model.UserRole;
 import com.csye6220.carrentalsystem.util.HibernateUtil;
 
 
@@ -211,7 +207,8 @@ public class CarDAOImpl implements CarDAO {
 	@Override
 	public List<Car> getAllCars() {
 		try(Session session = sessionFactory.openSession()){
-			return session.createQuery("from Car",Car.class).list();
+			return session.createQuery("from Car",Car.class)
+						.list();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -222,10 +219,8 @@ public class CarDAOImpl implements CarDAO {
 	@Override
 	public List<Car> getCarsByLocation(String location) {
 		try(Session session = sessionFactory.openSession()){
-            String queryString = "FROM IssueCard i WHERE i.assignedTo.id = :userId";
-            Query query = session.createQuery(queryString, Car.class);
-            query.setParameter("location", location);
-            return query.list();
+            return session.createQuery ("FROM Car c WHERE c.current_location = :current_location", Car.class)
+            			.list();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -235,22 +230,14 @@ public class CarDAOImpl implements CarDAO {
 
 	@Override
 	public List<Car> getCarsByAvailablity(boolean availability) {
-		try(Session session = sessionFactory.openSession()){
-            String queryString = "FROM IssueCard i WHERE i.assignedTo.id = :userId";
-            Query query = session.createQuery(queryString, Car.class);
-            query.setParameter("availability", availability);
-            return query.list();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-	}
-
-	@Override
-	public List<MaintenanceRecord> getMaintenanceRecords(int carID) {
-		// TODO Auto-generated method stub
-		return null;
+	    try (Session session = sessionFactory.openSession()) {
+	        return session.createQuery("FROM Car c WHERE c.availability = :availability", Car.class)
+	                      .setParameter("availability", availability)
+	                      .list();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
 	}
 
 }

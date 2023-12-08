@@ -29,6 +29,10 @@ public class RentalAgencyController {
     public String showAdminPortal() {
         return "admin_portal";
     }
+	@GetMapping("/agencyportal")
+    public String showAgencyPortal() {
+        return "rental_agency_portal";
+    }
 	
     @PostMapping("/add")
     public String addRentalAgency(

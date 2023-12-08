@@ -1,7 +1,5 @@
 package com.csye6220.carrentalsystem.model;
 
-import java.util.List;  
-
 import jakarta.persistence.*;
 
 @Entity

@@ -23,7 +23,6 @@ public class HibernateUtil {
         settings.put("hibernate.connection.url", "jdbc:mysql://localhost:3306/esd_final_project");
         settings.put("hibernate.connection.username", "root");
         settings.put("hibernate.connection.password","root");
-
         settings.put("hibernate.hbm2ddl.auto", "update");
         settings.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         settings.put("hibernate.dialect.storage_engine", "innodb");
@@ -33,7 +32,7 @@ public class HibernateUtil {
 
         MetadataSources metadataSources = new MetadataSources(serviceRegistry);
         metadataSources.addPackage("com.csye6220.carrentalsystem.model");
-        metadataSources.addAnnotatedClasses(Car.class, Issue.class, CarType.class, MaintenanceRecord.class, Mechanic.class, RentalAgency.class, Reservation.class, User.class, UserRole.class);
+        metadataSources.addAnnotatedClasses(Car.class, CarType.class, RentalAgency.class, Reservation.class, User.class, UserRole.class);
 
         Metadata metadata = metadataSources.buildMetadata();
 
