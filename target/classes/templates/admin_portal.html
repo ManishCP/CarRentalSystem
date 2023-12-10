@@ -1,56 +1,83 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <title>Admin Portal - Rental Agencies</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom styles -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .dashboard-container {
+            max-width: 800px;
+            margin: auto;
+            margin-top: 50px;
+        }
+        .welcome-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Welcome to Admin Portal</h2>
-
-    <h3>Rental Agencies</h3>
-
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Agency ID</th>
-                <th>Name</th>
-                <th>Location</th>
-                <th>Contact Details</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="agency : ${rentalAgencies}">
-                <td th:text="${agency.agencyName}"></td>
-                <td th:text="${agency.location}"></td>
-                <td th:text="${agency.contactDetails}"></td>
-                <td>
-                    <a th:href="@{/rental-agencies/{agencyID}(agencyID=${agency.agencyID})}">View</a>
-                    <span> | </span>
-                    <a th:href="@{/rental-agencies/edit/{agencyID}(agencyID=${agency.agencyID})}">Edit</a>
-                    <span> | </span>
-                    <a th:href="@{/rental-agencies/delete/{agencyID}(agencyID=${agency.agencyID})}">Delete</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
+    
+    <div class="container dashboard-container"><div class="welcome-section">
+		<h3>Rental Agencies</h3>
+        <h2>Welcome to Admin, Name</h2>
+        <a href="/users/edit" class="btn btn-primary">Update Profile</a>
+    </div>
+    <hr>
+    <h3>Car Options</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>View All Cars</h4>
+            <p>Explore and choose from a variety of cars based on different types and availability.</p>
+            <a href="/cars/all" class="btn btn-primary">View All Cars</a>
+        </div>
+    </div>
+    <hr>
+    <h3>Car Search</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Search for Car Locations</h4>
+            <p>Find cars based on their locations.</p>
+            <a href="/cars/byLocation" class="btn btn-primary">Search by Location</a>
+        </div>
+        <div class="col-md-6">
+            <h4>Search for Car Availability</h4>
+            <p>Find cars based on their Avaiability.</p>
+            <a href="/cars/byAvailability" class="btn btn-primary">Search by Availability</a>
+        </div>
+    </div>
+    <hr>
     <h3>Add New Rental Agency</h3>
-    <form th:action="@{/rental-agencies/add}" method="post">
-        <label for="agency-name">Agency Name:</label>
-        <input type="text" id="agency-name" name="agency-name" required />
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Agencies</h4>
+            <p>View All Agencies</p>
+            <a href="/rental-agencies/all" class="btn btn-primary">View</a>
+        </div>
+        <div class="col-md-6">
+            <h4>Add</h4>
+            <p>Add new agencies</p>
+            <a href="/rental-agencies/addagencyportal" class="btn btn-primary">Add</a>
+        </div>
+    </div>
+    <hr>
 
-        <br/>
+    
+	
+	
+	</div>	
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-        <label for="location">Location:</label>
-        <input type="text" id="location" name="location" required />
-
-        <br/>
-
-        <label for="contact-details">Contact Details:</label>
-        <input type="text" id="contact-details" name="contact-details" required />
-
-        <br/>
-        <button type="submit">Add Rental Agency</button>
-    </form-->
 </body>
 </html>

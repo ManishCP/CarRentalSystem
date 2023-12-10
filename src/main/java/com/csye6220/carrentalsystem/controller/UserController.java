@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -48,7 +49,7 @@ public class UserController {
     ) {
         User user = new User(username, email, password, UserRole.valueOf(role), phoneNumber);
         userService.createUser(user);
-        return "redirect:/users/all";
+        return "redirect:/";
     }
 
     @GetMapping("/{userID}")
@@ -62,27 +63,14 @@ public class UserController {
     @GetMapping("/update/{userID}") 
     public String editagencyForm(@PathVariable int userID, Model model) {
         User user = userService.getUserByID(userID);
-        model.addAttribute("userId", userID);
+//        System.out.println(user.getUserID()+" "+user.getPhoneNumber());
         model.addAttribute("user", user);
         return "edit_user_info";
     }
 
-    @PutMapping("/update/{userID}")
-    public String updateUser(
-            @PathVariable int userID,
-            @RequestParam(name = "username") String username,
-            @RequestParam(name = "email") String email,
-            @RequestParam(name = "password") String password,
-            @RequestParam(name = "role") String role,
-            @RequestParam(name = "phoneNumber") Long phoneNumber,
-            RedirectAttributes redirectAttributes
-    ) {
-        User user = userService.getUserByID(userID);
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setRole(UserRole.valueOf(role));
-        user.setPhoneNumber(phoneNumber);
+    @PostMapping("/update")
+    public String updateUser(@ModelAttribute("user") User user, @RequestParam("userID") Long userID, Model model) {
+    	user.setUserId(userID); // Obtain userID from hidden field
         userService.update(user);
         return "redirect:/users/all";
     }

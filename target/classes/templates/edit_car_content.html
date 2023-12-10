@@ -62,11 +62,6 @@
 		</div>
         
 		<div class="form-group">
-	        <label for="current-location">Current Location:</label>
-	        <input type="text" id="current-location" name="current-location" th:value="${car.currentLocation}" required />
-		</div>
-        
-        <div class="form-group">
 	        <label for="current-location">Current Location</label>
 	        <select id="current-location" name="current-location" required>
 	            <option th:each="location : ${T(com.csye6220.carrentalsystem.model.Location).values()}"

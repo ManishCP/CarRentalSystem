@@ -52,10 +52,13 @@
 		</form>
 		
 		<form th:action="@{/user}" method="post">
-				<button type="submit">Login as User</button>
+				<button class="btn btn-link" type="submit">Login as User</button>
+		</form>
+		
+		<form th:action="@{/adminPortal}" method="post">
+				<button class="btn btn-link">Login as Admin</button>
 		</form>
         
-        <button class="btn btn-link">Login as Admin</button>
         <button class="btn btn-link">Continue as Guest</button>
     </div>
 </div>

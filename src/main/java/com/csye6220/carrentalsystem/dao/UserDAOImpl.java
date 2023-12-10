@@ -91,10 +91,16 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public User getUserByUsername(String username) {
-		Session currentSession = sessionFactory.getCurrentSession();
-        return currentSession.createQuery("FROM User WHERE username = :username", User.class)
-                .setParameter("username", username)
-                .uniqueResult();
+		try(Session session = sessionFactory.openSession()) {
+            String queryString = "FROM User WHERE username = :username";
+            Query query = session.createQuery(queryString, User.class).setParameter("username", username);
+            List<User> users = query.list();
+            return users.size() == 1 ? users.get(0) : null;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
 	}
 
 }

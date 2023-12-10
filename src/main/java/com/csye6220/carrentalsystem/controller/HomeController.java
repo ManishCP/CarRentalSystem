@@ -12,7 +12,7 @@ public class HomeController {
 		return"login_page";
 	}
 
-	@PostMapping("/user")
+	@GetMapping("/user")
 	public String CustomerLogin() {
 		return "customer_portal";
 	}
@@ -32,5 +32,10 @@ public class HomeController {
 	public String CarsActionByRentalAgency() {
 		return "cars_agency_controls";
 	}
+	
+	@PostMapping("/adminPortal")
+    public String showAdminPortal() {
+        return "admin_portal";
+    }
 
 }

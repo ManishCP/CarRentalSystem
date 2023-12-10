@@ -1,6 +1,6 @@
 package com.csye6220.carrentalsystem.controller;
 
-import java.util.List;   
+import java.util.List;    
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import com.csye6220.carrentalsystem.model.Car;
 import com.csye6220.carrentalsystem.model.CarType;
@@ -25,11 +26,15 @@ public class CarController {
 	@Autowired
 	private CarService carService;
 	
+	
+	//This is to show the portal to add all the cars
 	@GetMapping("/add") 
 	public String getCarAddForm() {
 		return "add_car";
 	}
 	
+	
+	//This is to perform operations when car data is added
 	@PostMapping("/add")
     public String addCar(
             @RequestParam(name = "car-make", required = false) String carMake,
@@ -45,6 +50,7 @@ public class CarController {
         return "redirect:/cars/all";
     }
 
+	//When view car is given this operation is performed 
     @GetMapping("/{carID}")
     public ModelAndView getCarByID(@PathVariable int carID) {
         ModelAndView modelAndView = new ModelAndView("view_car");
@@ -58,7 +64,7 @@ public class CarController {
         return modelAndView;
     }
     
-    
+    //This operation is performed when edit car is given 
     @GetMapping("/edit/{carID}") 
     public String editCarForm(@PathVariable int carID, Model model) {
         Car car = carService.getCarByID(carID);
@@ -115,5 +121,5 @@ public class CarController {
         modelAndView.addObject("cars", cars);
         return modelAndView;
     }
-
+    
 }

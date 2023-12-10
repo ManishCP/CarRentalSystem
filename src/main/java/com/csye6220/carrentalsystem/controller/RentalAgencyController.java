@@ -1,18 +1,15 @@
 package com.csye6220.carrentalsystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.csye6220.carrentalsystem.model.Car;
 import com.csye6220.carrentalsystem.model.RentalAgency;
+import com.csye6220.carrentalsystem.model.User;
 import com.csye6220.carrentalsystem.service.RentalAgencyService;
-import com.csye6220.carrentalsystem.service.ReservationService;
 
 import java.util.List;
 
@@ -25,13 +22,15 @@ public class RentalAgencyController {
 	@Autowired
 	private RentalAgencyService rentalAgencyService;
 
-	@GetMapping("/adminPortal")
-    public String showAdminPortal() {
-        return "admin_portal";
-    }
+	
 	@GetMapping("/agencyportal")
     public String showAgencyPortal() {
         return "rental_agency_portal";
+    }
+	
+	@GetMapping("/addagencyportal")
+    public String showaddAgencyPortal() {
+        return "add_rental_agency";
     }
 	
     @PostMapping("/add")
@@ -59,30 +58,20 @@ public class RentalAgencyController {
     @GetMapping("/edit/{agencyID}") 
     public String editagencyForm(@PathVariable int agencyID, Model model) {
         RentalAgency rentalAgency = rentalAgencyService.getAgencyByID(agencyID);
-        model.addAttribute("agencyId", agencyID);
         model.addAttribute("RentalAgency", rentalAgency);
         return "edit_rental_agency_content";
     }
 
     @PostMapping("edit")
-    public String editRentalAgency(
-            @PathVariable int agencyID,
-            @RequestParam(name = "agency-name", required = false) String agencyName,
-            @RequestParam(name = "location", required = false) String location,
-            @RequestParam(name = "contact-details", required = false) String contactDetails,
-            RedirectAttributes redirectAttributes
-    ) {
-        RentalAgency rentalAgency = rentalAgencyService.getAgencyByID(agencyID);
-        rentalAgency.setAgencyName(agencyName);
-        rentalAgency.setLocation(location);
-        rentalAgency.setContactDetails(contactDetails);
+    public String editRentalAgency(@ModelAttribute("RentalAgency") User user, @RequestParam("agencyID") int agencyID, Model model) {
+    	RentalAgency rentalAgency = rentalAgencyService.getAgencyByID(agencyID);
+    	rentalAgency.setAgencyID(agencyID);
         rentalAgencyService.updateAgency(rentalAgency);
         return "redirect:/rental-agencies/all";
     }
 
     @GetMapping("/delete/{agencyID}")
     public String deleteRentalAgency(@PathVariable int agencyID) {
-        RentalAgency rentalAgency = rentalAgencyService.getAgencyByID(agencyID);
         rentalAgencyService.deleteAgency(agencyID);
         return "redirect:/rental-agencies/all";
     }
