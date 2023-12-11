@@ -28,19 +28,19 @@ public class Car {
 	
     private boolean availability;
 	
-    @Column(name="current_location")
-    private String currentLocation;
+    @Enumerated(EnumType.STRING)
+    private Location location;
     
     public Car () {}  
     
-    public Car(String carMake, String carModel, int carYear, CarType carType, String registrationNumber, boolean availability, String currentLocation) {
+    public Car(String carMake, String carModel, int carYear, CarType carType, String registrationNumber, boolean availability, Location location) {
 		this.carMake = carMake;
 		this.carModel = carModel;
 		this.carYear = carYear;
 		this.carType = carType;
 		this.registrationNumber = registrationNumber;
 		this.availability = availability;
-		this.currentLocation = currentLocation;
+		this.location = location;
 	}
 
     public int getCarID() {
@@ -99,12 +99,12 @@ public class Car {
         this.availability = availability;
     }
 
-    public String getCurrentLocation() {
-        return currentLocation;
-    }
+	public Location getLocation() {
+		return location;
+	}
 
-    public void setCurrentLocation(String currentLocation) {
-        this.currentLocation = currentLocation;
-    }  
+	public void setLocation(Location location) {
+		this.location = location;
+	}  
     
 }

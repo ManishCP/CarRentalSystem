@@ -9,6 +9,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -20,11 +22,13 @@ public class Reservation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reservationID;
 	
-//	@OneToMany(mappedBy = "users", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private int userID;
-	
-//	@OneToMany(mappedBy = "cars", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private int carID;
+	@ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "car_id", nullable = false)
+    private Car car;
 	
 	@Column(name = "start_date")
     private Date startDate;
@@ -46,23 +50,23 @@ public class Reservation {
         this.reservationID = reservationID;
     }
 
-    public int getUserID() {
-        return userID;
-    }
+    public User getUser() {
+		return user;
+	}
 
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    public int getCarID() {
-        return carID;
-    }
+	public Car getCar() {
+		return car;
+	}
 
-    public void setCarID(int carID) {
-        this.carID = carID;
-    }
+	public void setCar(Car car) {
+		this.car = car;
+	}
 
-    public Date getStartDate() {
+	public Date getStartDate() {
         return startDate;
     }
 
@@ -87,4 +91,3 @@ public class Reservation {
     }
     
 }
-

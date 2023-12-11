@@ -1,8 +1,11 @@
 package com.csye6220.carrentalsystem.dao;
 
-import com.csye6220.carrentalsystem.model.User;
+import com.csye6220.carrentalsystem.model.User; 
 
 import java.util.List;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public interface UserDAO {
 

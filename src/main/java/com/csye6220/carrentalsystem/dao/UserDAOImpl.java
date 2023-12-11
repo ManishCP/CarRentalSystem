@@ -6,9 +6,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import com.csye6220.carrentalsystem.model.Car;
+import com.csye6220.carrentalsystem.model.MyUserDetails;
 import com.csye6220.carrentalsystem.model.User;
 import com.csye6220.carrentalsystem.util.HibernateUtil;
 

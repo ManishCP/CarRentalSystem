@@ -5,21 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.csye6220.carrentalsystem.model.RentalAgency;
-import com.csye6220.carrentalsystem.model.Reservation;
 import com.csye6220.carrentalsystem.model.User;
-import com.csye6220.carrentalsystem.model.UserRole;
 import com.csye6220.carrentalsystem.service.UserService;
 
 @Controller
@@ -44,10 +38,9 @@ public class UserController {
             @RequestParam(name = "username") String username,
             @RequestParam(name = "email") String email,
             @RequestParam(name = "password") String password,
-            @RequestParam(name = "role") String role,
             @RequestParam(name = "phoneNumber") Long phoneNumber
     ) {
-        User user = new User(username, email, password, UserRole.valueOf(role), phoneNumber);
+        User user = new User(username, email, password, phoneNumber);
         userService.createUser(user);
         return "redirect:/";
     }
@@ -63,14 +56,13 @@ public class UserController {
     @GetMapping("/update/{userID}") 
     public String editagencyForm(@PathVariable int userID, Model model) {
         User user = userService.getUserByID(userID);
-//        System.out.println(user.getUserID()+" "+user.getPhoneNumber());
         model.addAttribute("user", user);
         return "edit_user_info";
     }
 
     @PostMapping("/update")
     public String updateUser(@ModelAttribute("user") User user, @RequestParam("userID") Long userID, Model model) {
-    	user.setUserId(userID); // Obtain userID from hidden field
+    	user.setUserID(userID); // Obtain userID from hidden field
         userService.update(user);
         return "redirect:/users/all";
     }

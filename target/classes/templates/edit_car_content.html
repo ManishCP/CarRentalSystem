@@ -65,7 +65,7 @@
 	        <label for="current-location">Current Location</label>
 	        <select id="current-location" name="current-location" required>
 	            <option th:each="location : ${T(com.csye6220.carrentalsystem.model.Location).values()}"
-	                    th:value="${location}" th:text="${location}" th:selected="${type == car.currentLocation}"></option>
+	                    th:value="${location}" th:text="${location}" th:selected="${type == car.location}"></option>
 	        </select>
         </div>
         

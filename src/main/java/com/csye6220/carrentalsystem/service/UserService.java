@@ -5,8 +5,11 @@ import com.csye6220.carrentalsystem.dao.UserDAO;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.csye6220.carrentalsystem.model.MyUserDetails;
 import com.csye6220.carrentalsystem.model.User;
 
 @Service
@@ -16,6 +19,7 @@ public class UserService {
 	private UserDAO userDAO;
 		
 	public void createUser(User user) {
+		System.out.println("Creation "+user.getUsername());
 		userDAO.createUser(user);
 	}
 	
@@ -41,6 +45,12 @@ public class UserService {
 	
 	public User getUserByUsername(String username) {
 		return userDAO.getUserByUsername(username);
+	}
+	
+	public UserDetails loadUserByEmail(String email) 
+			throws UsernameNotFoundException {
+		User user = userDAO.getUserByEmail(email);		
+		return new MyUserDetails(user);
 	}
 
 }

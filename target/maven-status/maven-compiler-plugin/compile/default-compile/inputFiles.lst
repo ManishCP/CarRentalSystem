@@ -1,6 +1,7 @@
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\controller\ReservationController.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\controller\UserController.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\dao\RentalAgencyDAOImpl.java
+D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\model\MyUserDetails.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\ServletInitializer.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\dao\UserDAOImpl.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\service\ReservationService.java
@@ -19,6 +20,8 @@ D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\contr
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\CarrentalsystemApplication.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\dao\ReservationDAOImpl.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\service\RentalAgencyService.java
+D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\model\Role.java
+D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\service\MyUserDetailsService.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\util\HibernateUtil.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\model\UserRole.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\controller\LoginController.java
@@ -28,3 +31,4 @@ D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\model
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\dao\UserDAO.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\controller\LogoutController.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\service\UserService.java
+D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\config\WebSecurityConfig.java

@@ -1,6 +1,6 @@
 package com.csye6220.carrentalsystem.controller;
 
-import java.util.List;    
+import java.util.List; 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.csye6220.carrentalsystem.model.Car;
 import com.csye6220.carrentalsystem.model.CarType;
+import com.csye6220.carrentalsystem.model.Location;
 import com.csye6220.carrentalsystem.service.CarService;
+
 
 
 @Controller
@@ -26,15 +28,11 @@ public class CarController {
 	@Autowired
 	private CarService carService;
 	
-	
-	//This is to show the portal to add all the cars
 	@GetMapping("/add") 
 	public String getCarAddForm() {
 		return "add_car";
 	}
 	
-	
-	//This is to perform operations when car data is added
 	@PostMapping("/add")
     public String addCar(
             @RequestParam(name = "car-make", required = false) String carMake,
@@ -43,14 +41,13 @@ public class CarController {
             @RequestParam(name = "car-type", required = false) String carType,
             @RequestParam(name = "registration-number", required = false) String registrationNumber,
             @RequestParam(name = "availability", required = false) boolean availability,
-            @RequestParam(name = "current-location", required = false) String currentLocation
+            @RequestParam(name = "current-location", required = false) String location
     ) {
-        Car car = new Car(carMake, carModel, carYear, CarType.valueOf(carType), registrationNumber, availability, currentLocation);
+        Car car = new Car(carMake, carModel, carYear, CarType.valueOf(carType), registrationNumber, availability, Location.valueOf(location));
         carService.createCar(car);
         return "redirect:/cars/all";
     }
-
-	//When view car is given this operation is performed 
+ 
     @GetMapping("/{carID}")
     public ModelAndView getCarByID(@PathVariable int carID) {
         ModelAndView modelAndView = new ModelAndView("view_car");
@@ -63,8 +60,7 @@ public class CarController {
         modelAndView.addObject("car", car);
         return modelAndView;
     }
-    
-    //This operation is performed when edit car is given 
+     
     @GetMapping("/edit/{carID}") 
     public String editCarForm(@PathVariable int carID, Model model) {
         Car car = carService.getCarByID(carID);
@@ -82,10 +78,10 @@ public class CarController {
             @RequestParam(name = "car-type", required = false) String carType,
             @RequestParam(name = "registration-number", required = false) String registrationNumber,
             @RequestParam(name = "availability", required = false) boolean availability,
-            @RequestParam(name = "current-location", required = false) String currentLocation,
+            @RequestParam(name = "current-location", required = false) String location,
             RedirectAttributes redirectAttributes
     ) {
-        Car car = new Car(carMake, carModel, carYear, CarType.valueOf(carType), registrationNumber, availability, currentLocation);
+        Car car = new Car(carMake, carModel, carYear, CarType.valueOf(carType), registrationNumber, availability, Location.valueOf(location));
         car.setCarID(carId);
         carService.update(car);
         return "redirect:/cars/all";
