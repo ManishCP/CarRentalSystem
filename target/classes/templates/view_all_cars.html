@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
 <head>
     <title>All Cars</title>
 </head>
@@ -7,47 +9,31 @@
     <h2>All Cars</h2>
     
     <form th:action="@{/cars/byLocation}" method="get">
-        <label for="locationFilter">Filter by Location:</label>
-        <select id="locationFilter" name="location">
-            <option value="">All Locations</option>
-            <option value="">BOSTON</option>
-            <option value="">CONNECTICUT</option>
-            <option value="">MAINE</option>
-            <!-- Add options dynamically based on your locations -->
-            <!-- For example, if you have a list of locations in your model: -->
-            <th:block th:each="location : ${locations}"> 
-            	<option th:each="type : ${T(com.csye6220.carrentalsystem.model.Location).values()}"
-                        th:value="${type}" th:text="${type}" th:selected="${type == car.currentLocation}"></option>
-            </th:block>
-        </select>
-        
-        <button type="submit">Search</button>
-    </form>
-        
-        <form th:action="@{/cars/byAvailability}" method="get">
-        <label for="locationFilter">Filter by Availability:</label>
-        <select id="availabilityFilter" name="availability">
-            <option value="">All Cars</option>
-            <option value="true">Available</option>
-            <option value="false">Not Available</option>
-            <!-- Add options dynamically based on your locations -->
-            <!-- For example, if you have a list of locations in your model: -->
-            <th:block th:each="location : ${locations}"> 
-            	<option th:each="type : ${T(com.csye6220.carrentalsystem.model.Location).values()}"
-                        th:value="${type}" th:text="${type}" th:selected="${type == car.currentLocation}"></option>
-            </th:block>
-        </select>
-        
-        <!--label for="availabilityFilter">Filter by Availability:</label>
-        <select id="availabilityFilter" name="availability">
-            <option value="">All Cars</option>
-            <option value="true">Available</option>
-            <option value="false">Not Available</option>
-        </select-->
-        
-        <button type="submit">Search</button>
-    </form>
-
+    	<label for="locationFilter">Filter by Location:</label>
+    	<select id="locationFilter" name="location">
+        <option value="">All Locations</option>
+        <option th:each="location : ${locations}" th:value="${location}" th:text="${location.name}"></option>
+    </select>
+    	<button type="submit">Search</button>
+	 </form>
+	 
+	 <form th:action="@{/cars/byCarType}" method="get">
+    	<label for="carTypeFilter">Filter by Car Type:</label>
+    	<select id="carTypeFilter" name="carType">
+        <option value="">All Cars</option>
+        <option th:each="carType : ${carTypes}" th:value="${carType}" th:text="${carType.name}"></option>
+    </select>
+    	<button type="submit">Search</button>
+	 </form>
+		<div th:if="${error}">
+        <p th:text="${error}" style="color:red"></p>
+		</div>
+     <div th:if="${success}">
+        <p th:text="${success}" style="color:greenyellow"></p>
+	 </div>
+		<div sec:authorize="hasAnyAuthority('AGENCY_STAFF', 'ADMIN')">
+          	<a th:href="@{/cars/add}" class="btn btn-primary">Add New Car</a>
+        </div> 
     <table border="1">
         <thead>
             <tr>
@@ -62,7 +48,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="car : ${cars}">
+            <tr th:each="car : ${filteredCars}">
                 <td th:text="*{car.carMake}"></td>
                 <td th:text="*{car.carModel}"></td>
                 <td th:text="*{car.carYear}"></td>
@@ -71,18 +57,25 @@
                 <td th:text="*{car.availability}"></td>
                 <td th:text="*{car.location}"></td>
                 <td>
-                    <a th:href="@{/cars/{carID}(carID=${car.carID})}">View</a>
+					<a th:href="@{/cars/{carID}(carID=${car.carID})}" class="btn btn-primary">Reserve</a>
                     <span> | </span>
-                    <!--a th:href="@{/cars/edit/{carID}(carID=${car.carID})}">Edit</a-->
-                    <a th:href="@{/cars/edit/{carID}(carID=${car.carID})}">Edit</a>
+                    <a sec:authorize="hasAnyAuthority('AGENCY_STAFF', 'ADMIN')"
+                    	 th:href="@{/cars/edit/{carID}(carID=${car.carID})}" class="btn btn-primary">Edit</a>
                     <span> | </span>
-                    <a th:href="@{/cars/delete/{carID}(carID=${car.carID})}">Delete</a>
+                    <a sec:authorize="hasAnyAuthority('AGENCY_STAFF', 'ADMIN')"
+                    	 th:href="@{/cars/delete/{carID}(carID=${car.carID})}" class="btn btn-primary">Delete</a>
                 </td>
-                
-                
-        
             </tr>
         </tbody>
     </table>
+    <div sec:authorize="hasAnyAuthority('CUSTOMER')">
+    	<a th:href="@{/user}" class="btn btn-primary">Back to Customer Portal</a>
+    </div> 
+    <div sec:authorize="hasAnyAuthority('AGENCY_STAFF')">
+       	<a th:href="@{/agencyStaff}" class="btn btn-primary">Back to Agency portal</a>
+    </div> 
+    <div sec:authorize="hasAnyAuthority('ADMIN')">
+       	<a th:href="@{/adminPortal}" class="btn btn-primary">Back to Admin Portal</a>
+    </div> 
 </body>
 </html>

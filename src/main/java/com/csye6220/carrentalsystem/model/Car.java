@@ -1,5 +1,8 @@
 package com.csye6220.carrentalsystem.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -30,6 +33,9 @@ public class Car {
 	
     @Enumerated(EnumType.STRING)
     private Location location;
+    
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Reservation> reservations;
     
     public Car () {}  
     
@@ -106,5 +112,15 @@ public class Car {
 	public void setLocation(Location location) {
 		this.location = location;
 	}  
+	
+	public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+	
+	
     
 }

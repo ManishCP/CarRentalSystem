@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
+import com.csye6220.carrentalsystem.model.Car;
 import com.csye6220.carrentalsystem.model.Reservation;
 import com.csye6220.carrentalsystem.util.HibernateUtil;
 
@@ -21,7 +22,7 @@ public class ReservationDAOImpl implements ReservationDAO {
 		try(Session session = sessionFactory.openSession()){
             Transaction transaction = session.getTransaction();
             transaction.begin();
-            session.persist(reservation);
+            session.merge(reservation);
             transaction.commit();
         }
         catch (Exception e){
@@ -83,24 +84,22 @@ public class ReservationDAOImpl implements ReservationDAO {
 	@Override
 	public List<Reservation> getReservationsByUser(int userID) {
 		try(Session session = sessionFactory.openSession()){
-            String queryString = "FROM Reservation WHERE user.userID = :userID = :userID";
-            Query query = session.createQuery(queryString, Reservation.class);
-            query.setParameter("userID", userID);
-            return query.list();
+            return session.createQuery("FROM Reservation WHERE user.userID = :userID", Reservation.class)
+            				.setParameter("userID", userID)
+            				.list();
         }
         catch (Exception e){
             e.printStackTrace();
             return null;
         }
 	}
-
+	
 	@Override
 	public List<Reservation> getReservationsByCar(int carID) {
 		try(Session session = sessionFactory.openSession()){
-            String queryString = "FROM Reservation WHERE car.carID = :carID = :carID";
-            Query query = session.createQuery(queryString, Reservation.class);
-            query.setParameter("carID", carID);
-            return query.list();
+			return session.createQuery("FROM Reservation WHERE car.carID = :carID", Reservation.class)
+    				.setParameter("carID", carID)
+    				.list();
         }
         catch (Exception e){
             e.printStackTrace();

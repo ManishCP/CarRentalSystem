@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.csye6220.carrentalsystem.model.Car;
 import com.csye6220.carrentalsystem.model.CarType;
 import com.csye6220.carrentalsystem.model.Location;
+import com.csye6220.carrentalsystem.model.Reservation;
 import com.csye6220.carrentalsystem.service.CarService;
 
 
@@ -69,7 +71,7 @@ public class CarController {
         return "edit_car_content";
     }
 
-    @PostMapping("edit")
+    @PostMapping("/edit")
     public String editCar(
     		@RequestParam(name = "car-id") int carId,
             @RequestParam(name = "car-make", required = false) String carMake,
@@ -95,27 +97,46 @@ public class CarController {
     }
 
     @GetMapping("/all")
-    public ModelAndView getAllCars() {
+    public ModelAndView getAllCars(@ModelAttribute("locations") Location[] locations) {
         ModelAndView modelAndView = new ModelAndView("view_all_cars");
         List<Car> cars = carService.getAllCars();
-        modelAndView.addObject("cars", cars);
-        return modelAndView;
-    }
-
-    @GetMapping("/byLocation")
-    public ModelAndView getCarsByLocation(@RequestParam String location) {
-        ModelAndView modelAndView = new ModelAndView("view_cars_by_location");
-        List<Car> cars = carService.getCarsByLocation(location);
-        modelAndView.addObject("cars", cars);
-        return modelAndView;
-    }
-
-    @GetMapping("/byAvailability")
-    public ModelAndView getCarsByAvailability(@RequestParam boolean availability) {
-        ModelAndView modelAndView = new ModelAndView("view_cars_by_availability");
-        List<Car> cars = carService.getCarsByAvailablity(availability);
-        modelAndView.addObject("cars", cars);
+        modelAndView.addObject("locations", locations);
+        modelAndView.addObject("filteredCars", cars);
         return modelAndView;
     }
     
+    @ModelAttribute("carTypes")
+    public CarType[] populateCarTypes() {
+        return CarType.values();
+    }
+    
+    @GetMapping("/byCarType")
+    public String getCarsByCarType(@RequestParam(required = false) CarType carType, Model model) {
+        List<Car> filteredCars;
+        if (carType != null) {
+            filteredCars = carService.getCarsByCarType(carType);
+        } else {
+            filteredCars = carService.getAllCars();
+        }
+        model.addAttribute("filteredCars", filteredCars);
+        return "view_all_cars";
+    }
+    
+    @ModelAttribute("locations")
+    public Location[] populateLocations() {
+        return Location.values();
+    }
+    
+    @GetMapping("/byLocation")
+    public String getCarsByLocation(@RequestParam(required = false) Location location, Model model) {
+        List<Car> filteredCars;
+        if (location != null) {
+            filteredCars = carService.getCarsByLocation(location);
+        } else {
+            filteredCars = carService.getAllCars();
+        }
+        model.addAttribute("filteredCars", filteredCars);
+        return "view_all_cars";
+    }  
+
 }

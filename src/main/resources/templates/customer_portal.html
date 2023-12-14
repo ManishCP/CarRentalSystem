@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -28,42 +29,59 @@
 
 <div class="container dashboard-container">
     <div class="welcome-section">
-        <h2>Welcome, Username</h2>
+        <h2>Welcome,<span sec:authentication="name">Username</span></h2>
         <a href="/users/edit" class="btn btn-primary">Update Profile</a>
+        
+        <form th:action="@{/logout}" method="post">
+    		<input type="submit" value="Logout" />
+		</form>
     </div>
+    
     <hr>
     <h3>Car Options</h3>
     <div class="row">                                                                                                                                                                                                                                                                                                                                                                                                                                 
         <div class="col-md-6">
             <h4>View All Cars</h4>
-            <p>Explore and choose from a variety of cars based on different types and availability.</p>
-            <a href="/cars/all" class="btn btn-primary">View All Cars</a>
+            <p>You can also sort through</p>
+            <ul>
+			  <li>By location</li>
+			  <li>By Type of car</li>
+			  <li>Make a reservation</li>
+			</ul>
+				
+            <a href="/cars/all" class="btn btn-primary">View</a>
         </div>
     </div>
     <hr>
-    <h3>Car Search</h3>
+    
+ <h3>Your Reservations</h3>
     <div class="row">
-        <div class="col-md-6">
-            <h4>Search for Car Locations</h4>
-            <p>Find cars based on their locations.</p>
-            <a href="/cars/byLocation" class="btn btn-primary">Search by Location</a>
-        </div>
-        <div class="col-md-6">
-            <h4>Search for Car Availability</h4>
-            <p>Find cars based on their Avaiability.</p>
-            <a href="/cars/byAvailability" class="btn btn-primary">Search by Availability</a>
+        <div class="col-md-12">
+            <!-- Table for displaying reservations -->
+            <table class="table reservations-table">
+                <thead>
+                    <tr>
+                        <th>Car Make</th>
+                        <th>Car Model</th>
+                        <th>Car Type</th>
+                        <th>Registration Number</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="reservation : ${reservations}">
+                        <td th:text="${reservation.car.carMake}"></td>
+                        <td th:text="${reservation.car.carModel}"></td>
+                        <td th:text="${reservation.car.carType}"></td>
+                        <td th:text="${reservation.car.registrationNumber}"></td>
+                        <td th:text="${#dates.format(reservation.startDate, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${#dates.format(reservation.endDate, 'yyyy-MM-dd')}"></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-    <hr>
-    <h3>Make a Reservation</h3>
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Reserve a Car</h4>
-            <p>Book a car for your desired dates.</p>
-            <a href="/reservations/create" class="btn btn-primary">Make a Reservation</a>
-        </div>
-    </div>
-</div>
 
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

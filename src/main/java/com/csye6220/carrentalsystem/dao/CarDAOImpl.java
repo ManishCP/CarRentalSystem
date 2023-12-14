@@ -130,6 +130,8 @@
 
 package com.csye6220.carrentalsystem.dao;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List; 
 
 import org.hibernate.Session;
@@ -139,6 +141,10 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.csye6220.carrentalsystem.model.Car;
+import com.csye6220.carrentalsystem.model.CarType;
+import com.csye6220.carrentalsystem.model.Location;
+import com.csye6220.carrentalsystem.model.Reservation;
+import com.csye6220.carrentalsystem.model.User;
 import com.csye6220.carrentalsystem.util.HibernateUtil;
 
 
@@ -217,9 +223,10 @@ public class CarDAOImpl implements CarDAO {
 	}
 
 	@Override
-	public List<Car> getCarsByLocation(String location) {
+	public List<Car> getCarsByLocation(Location location) {
 		try(Session session = sessionFactory.openSession()){
-            return session.createQuery ("FROM Car c WHERE c.current_location = :current_location", Car.class)
+            return session.createQuery ("FROM Car c WHERE c.location = :location", Car.class)
+            			.setParameter("location", location)
             			.list();
         }
         catch (Exception e){
@@ -238,6 +245,19 @@ public class CarDAOImpl implements CarDAO {
 	        e.printStackTrace();
 	        return null;
 	    }
+	}
+
+	@Override
+	public List<Car> getCarsByCarType(CarType carType) {
+		try(Session session = sessionFactory.openSession()){
+            return session.createQuery ("FROM Car c WHERE c.carType = :carType", Car.class)
+            			.setParameter("carType", carType)
+            			.list();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
 	}
 
 }

@@ -31,16 +31,25 @@
     <div class="welcome-section">
         <h2>Welcome, Rental Agency</h2>
         <a href="/edit/{agencyID}" class="btn btn-primary">Update Profile</a>
+        
+        <form th:action="@{/logout}" method="post">
+    		<input type="submit" value="Logout" />
+		</form>
     </div>
     <hr>
     <h3>Car Options</h3>
     <div class="row">
-        <div class="col-md-6">
+		<div class="col-md-6">
             <h4>View All Cars</h4>
-            <p>View all the cars in your fleet</p>
-            <a href="/cars/all" class="btn btn-primary">View All Cars</a>
-            <h4>Location</h4>
-            <p>View all the cars in your fleet Specific to Location</p>
+            <p>You can also sort through</p>
+            <ul>
+			  <li>By location</li>
+			  <li>By Type of car</li>
+			  <li>Edit your Cars</li>
+			  <li>Add your Cars</li>
+			  <li>Add your Cars</li>
+			</ul>
+				
             <a href="/cars/all" class="btn btn-primary">View</a>
         </div>
         <div class="col-md-6">
@@ -49,31 +58,20 @@
             <a href="/cars/add" class="btn btn-primary">Add</a>
         </div>
         <div class="col-md-6">
-            <h4>Delete Cars</h4>
-            <p>Delete Cars from your fleet</p>
-            <a href="/cars/delete" class="btn btn-primary">Delete</a>
+            <h4>View Reservations</h4>
+            <p>View All Reservations on your cars</p>
+            <a href="/cars/add" class="btn btn-primary">View</a>
         </div>
-        <div class="col-md-6">
-            <h4>Edit Cars</h4>
-            <p>Edit Cars from your fleet</p>
-            <a href="/cars/add" class="btn btn-primary">Edit</a>
-        </div>
+
         
     </div>
     <hr>
-    <h3>Reserved Cars</h3>
+    <h3>Reservations</h3>
     <div class="row">
         <div class="col-md-6">
-            <h4>View Cars</h4>
-            <p>View All cars which are in Use</p>
-            <a href="/cars/byLocation" class="btn btn-primary">Search by Location</a>
-            <p>View All User details of the cars which are being used</p>
-            <a href="/cars/byLocation" class="btn btn-primary">View Users</a>
-        </div>
-        <div class="col-md-6">
-            <h4>Search for Car Availability</h4>
-            <p>Find cars based on their Avaiability.</p>
-            <a href="/cars/byAvailability" class="btn btn-primary">Search by Availability</a>
+            <h4>View Reservations</h4>
+            <p>View all the reservations made on your cars</p>
+            <a href="/reservations/all" class="btn btn-primary">View</a>
         </div>
     </div>
     <hr>

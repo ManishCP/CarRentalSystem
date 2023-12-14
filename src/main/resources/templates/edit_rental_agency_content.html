@@ -7,7 +7,7 @@
     <h2>Edit Rental Agency</h2>
 
     <form th:action="@{/rental-agencies/edit}" method="post">
-        <input type="hidden" id="agencyID" name="agencyID" th:value="${agencyId}" />
+        <input type="hidden" id="agencyID" name="agencyID" th:value="${agencyID}" />
 
         <label for="agency-name">Agency Name:</label>
         <input type="text" id="agency-name" name="agency-name" th:value="${RentalAgency.agencyName}" required />

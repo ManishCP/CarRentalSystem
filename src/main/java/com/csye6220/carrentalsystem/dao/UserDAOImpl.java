@@ -1,20 +1,21 @@
 package com.csye6220.carrentalsystem.dao;
 
+import java.util.ArrayList; 
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.csye6220.carrentalsystem.model.Car;
-import com.csye6220.carrentalsystem.model.MyUserDetails;
+import com.csye6220.carrentalsystem.model.Reservation;
 import com.csye6220.carrentalsystem.model.User;
 import com.csye6220.carrentalsystem.util.HibernateUtil;
 
+@Transactional
 @Repository
 public class UserDAOImpl implements UserDAO {
 
@@ -83,10 +84,10 @@ public class UserDAOImpl implements UserDAO {
         }
 	}
 
-		
+	
 	@Override
     public User getUserByEmail(String email) {
-        Session currentSession = sessionFactory.getCurrentSession();
+        Session currentSession = sessionFactory.openSession();
         return currentSession.createQuery("FROM User WHERE email = :email", User.class)
                 .setParameter("email", email)
                 .uniqueResult();

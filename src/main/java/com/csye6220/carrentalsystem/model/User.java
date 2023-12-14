@@ -1,18 +1,25 @@
 package com.csye6220.carrentalsystem.model;
 
-import java.util.HashSet; 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class User {
+@Inheritance(strategy=InheritanceType.JOINED)
+public class User implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_id", nullable = false)
-    private Long userID;
+    private int userID;
 	
 	@Column(name = "username", length = 45, nullable = false)
     private String username;
@@ -25,49 +32,33 @@ public class User {
     
     @Column(name="phone_number")
     private Long phoneNumber;
-    
-    @Column(name = "enabled")
-    private Boolean enabled;
- 
-    public Boolean getEnabled() {
-		return enabled;
-	}
 
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
+	@Enumerated(EnumType.STRING)
+	private UserRole role;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Reservation> reservations = new ArrayList<>();
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(
-	    name = "users_roles",
-	    joinColumns = @JoinColumn(name = "user_id"),
-	    inverseJoinColumns = @JoinColumn(name = "role_id")
-	)
-	private Set<Role> roles = new HashSet<>();
-
-    public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
-
+	@OneToMany(cascade = CascadeType.ALL)
+    @OrderColumn(name = "fleet")
+    private List<Car> fleet; 
+	
 	public User() {
     }
     
-    public User(String username, String email, String password, Long phoneNumber) {
-    	this.username = username;
+	public User(String username, String email, String password, Long phoneNumber, UserRole role) {
+		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.phoneNumber = phoneNumber;
+		this.role = role;
 	}
-    
-	public Long getUserID() {
+
+	public int getUserID() {
         return userID;
     }
 
-    public void setUserID(Long userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
 
@@ -102,4 +93,45 @@ public class User {
     public void setPhoneNumber(Long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+    
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+	public UserRole getRole() {
+		return role;
+	}
+
+	public void setRole(UserRole role) {
+		this.role = role;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 }

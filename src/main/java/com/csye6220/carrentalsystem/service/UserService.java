@@ -6,14 +6,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.csye6220.carrentalsystem.model.MyUserDetails;
 import com.csye6220.carrentalsystem.model.User;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 	
 	@Autowired
 	private UserDAO userDAO;
@@ -40,17 +40,22 @@ public class UserService {
 	}
 	
 	public User getUserByEmail(String email) {
+		System.out.println("here "+ email);
 		return userDAO.getUserByEmail(email);
 	}
 	
 	public User getUserByUsername(String username) {
 		return userDAO.getUserByUsername(username);
 	}
-	
-	public UserDetails loadUserByEmail(String email) 
-			throws UsernameNotFoundException {
-		User user = userDAO.getUserByEmail(email);		
-		return new MyUserDetails(user);
-	}
 
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userDAO.getUserByEmail(username);
+		
+		if(user == null) {
+			throw new UsernameNotFoundException("User nt found");
+		}
+		return user;
+	}
+	
 }

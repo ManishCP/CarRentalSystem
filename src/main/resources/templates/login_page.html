@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -31,10 +32,10 @@
 
 <div class="container login-container">
     <h2 class="text-center mb-4">Login</h2>
-    <form th:action="@{/perform-login}" method="post">
+    <form th:action="@{/login}" method="post">
         <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
+            <label for="email">Email :</label>
+            <input type="text" class="form-control" id="email" name="username" placeholder="Enter email" required>
         </div>
         <div class="form-group">
             <label for="password">Password:</label>
@@ -47,19 +48,15 @@
 		<form th:action="@{/users/signup/customer}" method="post">
         	<button class="btn btn-link">Sign Up</button>
 		</form>
-        <form th:action="@{/agencyStaff}" method="post">
-				<button class="btn btn-link">Login as Rental Agency</button>
-		</form>
 		
-		<form th:action="@{/user}" method="post">
-				<button class="btn btn-link" type="submit">Login as User</button>
+		<form th:action="@{/agencyStaff}" method="get">
+        	<button class="btn btn-link">Login as agencystaff</button>
 		</form>
 		
 		<form th:action="@{/adminPortal}" method="post">
 				<button class="btn btn-link">Login as Admin</button>
 		</form>
         
-        <button class="btn btn-link">Continue as Guest</button>
     </div>
 </div>
 

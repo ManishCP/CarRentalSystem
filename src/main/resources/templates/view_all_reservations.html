@@ -9,7 +9,7 @@
         <thead>
             <tr>
                 <th>Reservation ID</th>
-                <th>User ID</th>
+                <!--<th>User ID</th>-->
                 <th>Car ID</th>
                 <th>Start Date</th>
                 <th>End Date</th>
@@ -20,8 +20,8 @@
         <tbody>
             <tr th:each="reservation : ${reservations}">
                 <td th:text="*{reservation.reservationID}"></td>
-                <td th:text="*{reservation.userID}"></td>
-                <td th:text="*{reservation.carID}"></td>
+                <!-- <td th:text="*{reservation.userID}"></td> -->
+                <td th:text="*{reservation.car.carID}"></td>
                 <td th:text="*{reservation.startDate}"></td>
                 <td th:text="*{reservation.endDate}"></td>
                 <td th:text="*{reservation.status}"></td>

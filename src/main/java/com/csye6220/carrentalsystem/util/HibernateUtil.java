@@ -32,8 +32,8 @@ public class HibernateUtil {
 
         MetadataSources metadataSources = new MetadataSources(serviceRegistry);
         metadataSources.addPackage("com.csye6220.carrentalsystem.model");
-        metadataSources.addAnnotatedClasses(Car.class, CarType.class, Location.class, MyUserDetails.class, RentalAgency.class, Reservation.class, User.class, Role.class, UserRole.class);
-
+        metadataSources.addAnnotatedClasses(Car.class, CarType.class, Location.class, Reservation.class, User.class, UserRole.class);
+        
         Metadata metadata = metadataSources.buildMetadata();
 
         SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();

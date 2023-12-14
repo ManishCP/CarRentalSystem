@@ -22,11 +22,11 @@ public class Reservation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reservationID;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "car_id", nullable = false)
     private Car car;
 	
@@ -42,7 +42,17 @@ public class Reservation {
     
     public Reservation() {}
 
-    public int getReservationID() {
+	public Reservation(User user, Car car, Date startDate, Date endDate, String status) {
+		this.user = user;
+		this.car = car;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.status = status;
+	}
+
+
+
+	public int getReservationID() {
         return reservationID;
     }
 

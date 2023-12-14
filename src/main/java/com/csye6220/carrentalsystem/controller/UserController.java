@@ -3,6 +3,7 @@ package com.csye6220.carrentalsystem.controller;
 import java.util.List; 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.csye6220.carrentalsystem.model.User;
+import com.csye6220.carrentalsystem.model.UserRole;
 import com.csye6220.carrentalsystem.service.UserService;
 
 @Controller
@@ -40,7 +42,7 @@ public class UserController {
             @RequestParam(name = "password") String password,
             @RequestParam(name = "phoneNumber") Long phoneNumber
     ) {
-        User user = new User(username, email, password, phoneNumber);
+        User user = new User(username, email, new BCryptPasswordEncoder().encode(password), phoneNumber, UserRole.CUSTOMER);
         userService.createUser(user);
         return "redirect:/";
     }
@@ -61,8 +63,8 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") User user, @RequestParam("userID") Long userID, Model model) {
-    	user.setUserID(userID); // Obtain userID from hidden field
+    public String updateUser(@ModelAttribute("user") User user, @RequestParam("userID") int userID, Model model) {
+    	user.setUserID(userID);
         userService.update(user);
         return "redirect:/users/all";
     }
