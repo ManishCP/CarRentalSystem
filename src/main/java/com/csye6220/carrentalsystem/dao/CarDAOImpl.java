@@ -162,7 +162,7 @@ public class CarDAOImpl implements CarDAO {
 		Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            session.persist(car);
+            session.merge(car);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

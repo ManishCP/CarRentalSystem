@@ -10,26 +10,27 @@
             <tr>
                 <th>Agency ID</th>
                 <th>Agency Name</th>
-                <th>Location</th>
+                <th>Email</th>
                 <th>Contact Details</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="rentalAgency : ${rentalAgencies}">
-                <td th:text="*{rentalAgency.agencyID}"></td>
-                <td th:text="*{rentalAgency.agencyName}"></td>
-                <td th:text="*{rentalAgency.location}"></td>
-                <td th:text="*{rentalAgency.contactDetails}"></td>
+            <tr th:each="user : ${users}">
+                <td th:text="*{user.userID}"></td>
+                <td th:text="*{user.username}"></td>
+                <td th:text="*{user.email}"></td>
+                <td th:text="*{user.phoneNumber}"></td>
                 <td>
-                    <a th:href="@{/rental-agencies/{agencyID}(agencyID=${rentalAgency.agencyID})}">View</a>
+                    <a th:href="@{/rental-agencies/{userID}(userID=${user.userID})}">View</a>
                     <span> | </span>
-                    <a th:href="@{/rental-agencies/edit/{agencyID}(agencyID=${rentalAgency.agencyID})}">Edit</a>
+                    <a th:href="@{/rental-agencies/update/{userID}(userID=${user.userID})}">Edit</a>
                     <span> | </span>
-                    <a th:href="@{/rental-agencies/delete/{agencyID}(agencyID=${rentalAgency.agencyID})}">Delete</a>
+                    <a th:href="@{/rental-agencies/delete/{userID}(userID=${user.userID})}">Delete</a>
                 </td>
             </tr>
         </tbody>
+        <a th:href="@{/user}" class="btn btn-primary">Back to Portal</a>
     </table>
 </body>
 </html>

@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.csye6220.carrentalsystem.model.Car;
+import com.csye6220.carrentalsystem.model.CarType;
+import com.csye6220.carrentalsystem.model.Location;
 import com.csye6220.carrentalsystem.model.User;
 
 @Service
@@ -48,6 +51,22 @@ public class UserService implements UserDetailsService {
 		return userDAO.getUserByUsername(username);
 	}
 
+	public List<Car> getCarsByLocation(Location location) {
+		return userDAO.getCarsByLocation(location);
+	}
+	
+	public List<Car> getCarsByCarType(CarType carType) {
+		return userDAO.getCarsByCarType(carType);
+	}
+	
+	public List<User> getAllCustomers() {
+		return userDAO.getAllCustomers();
+	}
+	
+	public List<User> getAllAgencies() {
+		return userDAO.getAllAgencies();
+	}
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userDAO.getUserByEmail(username);

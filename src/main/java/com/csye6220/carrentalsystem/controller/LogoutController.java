@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LogoutController {
 
-    @GetMapping("/logout*")
+    @GetMapping("/logout")
     public String handleLogout(HttpServletRequest request){
         request.getSession().invalidate();
-        return "redirect:/";
+        return "redirect:/login";
     }
 
 }

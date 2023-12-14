@@ -1,16 +1,13 @@
 package com.csye6220.carrentalsystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.csye6220.carrentalsystem.model.Car;
-import com.csye6220.carrentalsystem.model.CarType;
-import com.csye6220.carrentalsystem.model.Location;
 import com.csye6220.carrentalsystem.model.User;
 import com.csye6220.carrentalsystem.model.UserRole;
 import com.csye6220.carrentalsystem.service.UserService;
@@ -46,7 +43,7 @@ public class RentalAgencyController {
     ) {
     	User user = new User(username, email, new BCryptPasswordEncoder().encode(password), phoneNumber, UserRole.AGENCY_STAFF);
     	userService.createUser(user);
-        return "redirect:/rental-agencies/all";
+        return "redirect:/rental-agencies/allAgencies";
     }
     
     @GetMapping("/{userID}")
@@ -57,11 +54,21 @@ public class RentalAgencyController {
         return modelAndView;
     }
     
+    @GetMapping("/update") 
+    public String editagencyForm(Model model) {
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName();
+	    User currentUser = userService.getUserByUsername(username);
+	    
+        model.addAttribute("user", currentUser);
+        return "edit_rental_agency_content";
+    }
+    
     @GetMapping("/update/{userID}") 
     public String editagencyForm(@PathVariable int userID, Model model) {
         User user = userService.getUserByID(userID);
         model.addAttribute("user", user);
-        return "edit_user_info";
+        return "edit_rental_agency_content";
     }
 
     @PostMapping("/update")
@@ -76,25 +83,42 @@ public class RentalAgencyController {
     	user.setPassword(new BCryptPasswordEncoder().encode(password));
     	user.setPhoneNumber(phoneNumber);
     	user.setRole(UserRole.AGENCY_STAFF);
-//    	user = new User(username, email, new BCryptPasswordEncoder().encode(password), phoneNumber, UserRole.AGENCY_STAFF);
-        userService.update(user);
-        return "redirect:/rental-agencies/all";
+
+    	userService.update(user);
+    	
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    User currentUser = userService.getUserByUsername(authentication.getName());
+	    
+    	if(currentUser.getRole() == UserRole.AGENCY_STAFF) {
+        	return "redirect:/user";
+        } else {
+        	return "redirect:/rental-agencies/allAgencies";
+        }
     }
     
     @GetMapping("/delete/{userID}")
     public String deleteUser(@PathVariable int userID) {
     	userService.delete(userID);
-        return "redirect:/rental-agencies/all";
+        return "redirect:/rental-agencies/allAgencies";
     }
 
-    @GetMapping("/all")
+    @GetMapping("/allUsers")
     public ModelAndView getAllUsers() {
         ModelAndView modelAndView = new ModelAndView("view_all_users");
-        List<User> users = userService.getAllUsers();
+        List<User> users = userService.getAllCustomers();
+        users.forEach(System.out::println);
         modelAndView.addObject("users", users);
         return modelAndView;
     }
     
+    @GetMapping("/allAgencies")
+    public ModelAndView getAllAgencies() {
+        ModelAndView modelAndView = new ModelAndView("view_all_rental_agencies");
+        List<User> users = userService.getAllAgencies();
+        users.forEach(System.out::println);
+        modelAndView.addObject("users", users);
+        return modelAndView;
+    }
     
 
 //
@@ -105,23 +129,6 @@ public class RentalAgencyController {
 //    }
    
 //
-//    @GetMapping("/all")
-//    public ModelAndView getAllRentalAgencies() {
-//        ModelAndView modelAndView = new ModelAndView("view_all_rental_agencies");
-//        List<RentalAgency> rentalAgencies = rentalAgencyService.getAllAgencies();
-//        modelAndView.addObject("rentalAgencies", rentalAgencies);
-//        return modelAndView;
-//    }
-//
-//    @GetMapping("/{agencyID}/fleet")
-//    public ModelAndView getRentalAgencyFleet(@PathVariable int agencyID) {
-//        ModelAndView modelAndView = new ModelAndView("view_rental_agency_fleet");
-//        RentalAgency rentalAgency = rentalAgencyService.getAgencyByID(agencyID);
-//        List<Car> fleet = rentalAgency.getFleet();
-//        modelAndView.addObject("rentalAgency", rentalAgency);
-//        modelAndView.addObject("fleet", fleet);
-//        return modelAndView;
-//    } 
 }
 
 

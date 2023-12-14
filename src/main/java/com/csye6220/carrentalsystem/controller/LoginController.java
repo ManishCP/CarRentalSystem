@@ -1,6 +1,8 @@
  package com.csye6220.carrentalsystem.controller;
 
-import com.csye6220.carrentalsystem.model.User; 
+import com.csye6220.carrentalsystem.model.User;
+import com.csye6220.carrentalsystem.model.UserRole;
+
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,7 +22,7 @@ public class LoginController {
     
     @GetMapping("/login")
     public ModelAndView redirectToLoginPage(){
-        return new ModelAndView("login_page");
+		return new ModelAndView("login_page");
     }
 
     @PostMapping("/login")

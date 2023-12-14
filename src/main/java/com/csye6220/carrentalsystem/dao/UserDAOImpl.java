@@ -11,6 +11,9 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.csye6220.carrentalsystem.model.Car;
+import com.csye6220.carrentalsystem.model.CarType;
+import com.csye6220.carrentalsystem.model.Location;
 import com.csye6220.carrentalsystem.model.Reservation;
 import com.csye6220.carrentalsystem.model.User;
 import com.csye6220.carrentalsystem.util.HibernateUtil;
@@ -92,6 +95,28 @@ public class UserDAOImpl implements UserDAO {
                 .setParameter("email", email)
                 .uniqueResult();
     }
+	
+	@Override
+	public List<User> getAllCustomers() {
+		try(Session session = sessionFactory.openSession()){
+			return session.createQuery("FROM User WHERE role = CUSTOMER", User.class).list();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+	}
+	
+	@Override
+	public List<User> getAllAgencies() {
+		try(Session session = sessionFactory.openSession()){
+			return session.createQuery("FROM User WHERE role = AGENCY_STAFF", User.class).list();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+	}
 
 	@Override
 	public User getUserByUsername(String username) {
@@ -105,6 +130,31 @@ public class UserDAOImpl implements UserDAO {
             e.printStackTrace();
         }
         return null;
+	}
+
+	@Override
+	public List<Car> getCarsByLocation(Location location) {
+	    try (Session session = sessionFactory.openSession()) {
+	        return session.createQuery("SELECT c FROM User u JOIN u.fleet c WHERE u.location = :location", Car.class)
+	        		.setParameter("location", location)
+	                      .list();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
+	
+	@Override
+	public List<Car> getCarsByCarType(CarType carType) {
+		try(Session session = sessionFactory.openSession()){
+            return session.createQuery ("SELECT c FROM User u JOIN u.fleet c WHERE u.carType = :carType", Car.class)
+            			.setParameter("carType", carType)
+            			.list();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
 	}
 
 }

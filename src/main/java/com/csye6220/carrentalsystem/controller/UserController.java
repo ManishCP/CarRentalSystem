@@ -3,6 +3,8 @@ package com.csye6220.carrentalsystem.controller;
 import java.util.List; 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,24 +57,36 @@ public class UserController {
         return modelAndView;
     }
     
-    @GetMapping("/update/{userID}") 
-    public String editagencyForm(@PathVariable int userID, Model model) {
-        User user = userService.getUserByID(userID);
+    @GetMapping("/update") 
+    public String editagencyForm(Model model) {
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName();
+	    User user = userService.getUserByUsername(username);
+	    
         model.addAttribute("user", user);
+        
         return "edit_user_info";
     }
 
     @PostMapping("/update")
     public String updateUser(@ModelAttribute("user") User user, @RequestParam("userID") int userID, Model model) {
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName();
+	    User currentUser = userService.getUserByUsername(username);
+	    
     	user.setUserID(userID);
+    	user.setRole(currentUser.getRole());
+    	user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+    	
         userService.update(user);
-        return "redirect:/users/all";
+        
+        return "redirect:/user";
     }
 
     @GetMapping("/delete/{userID}")
     public String deleteUser(@PathVariable int userID) {
     	userService.delete(userID);
-        return "redirect:/users/all";
+        return "redirect:/rental-agencies/allUsers";
     }
 
     @GetMapping("/all")

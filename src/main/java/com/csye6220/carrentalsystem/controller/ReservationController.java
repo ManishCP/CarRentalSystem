@@ -2,6 +2,7 @@ package com.csye6220.carrentalsystem.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import com.csye6220.carrentalsystem.model.Car;
 import com.csye6220.carrentalsystem.model.Reservation;
 import com.csye6220.carrentalsystem.model.User;
+import com.csye6220.carrentalsystem.model.UserRole;
 import com.csye6220.carrentalsystem.service.CarService;
 import com.csye6220.carrentalsystem.service.ReservationService;
 import com.csye6220.carrentalsystem.service.UserService;
@@ -50,7 +52,7 @@ public class ReservationController {
 		   Car car = carService.getCarByID(carID);
 
 		   Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		    String username = authentication.getName();
+		   String username = authentication.getName();
 		   User user = userService.getUserByUsername(username);
 	       if (car == null) {
 	           redirectAttributes.addFlashAttribute("error", "Car not found.");
@@ -61,9 +63,7 @@ public class ReservationController {
 	            Date parsedStartDate = dateFormat.parse(startDate);
 	            Date parsedEndDate = dateFormat.parse(endDate);
 	            
-	            // Check if the car is available for reservation for the given date range
 	            if (carService.isCarAvailableForReservation(carID, parsedStartDate, parsedEndDate)) {
-	                // Create a reservation
 	                Reservation reservation = new Reservation();
 	                reservation.setUser(user);
 	                reservation.setCar(car);
@@ -71,7 +71,6 @@ public class ReservationController {
 	                reservation.setEndDate(parsedEndDate);
 	                reservation.setStatus("Pending");
 
-	                // Save the reservation
 	                reservationService.createReservation(reservation);
 	                
 	                car.getReservations().add(reservation);
@@ -146,7 +145,28 @@ public class ReservationController {
     @GetMapping("/all")
     public ModelAndView getAllReservations() {
         ModelAndView modelAndView = new ModelAndView("view_all_reservations");
-        List<Reservation> reservations = reservationService.getAllReservations();
+        List<Reservation> reservations;
+	    
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName();
+	    User user = userService.getUserByUsername(username);
+	    
+	    if(user.getRole() == UserRole.CUSTOMER) {
+	    	reservations = user.getReservations();
+	    } else if(user.getRole() == UserRole.AGENCY_STAFF) {
+	    	List<Car> fleet = user.getFleet();
+
+	        List<Reservation> allReservations = new ArrayList<>();
+	        
+	        for (Car car : fleet) {
+	            allReservations.addAll(car.getReservations());
+	        }
+
+	    	reservations = allReservations;
+	    } else {
+	    	reservations = reservationService.getAllReservations();
+	    }
+        
         modelAndView.addObject("reservations", reservations);
         return modelAndView;
     }

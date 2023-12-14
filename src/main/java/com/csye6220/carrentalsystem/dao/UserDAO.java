@@ -1,5 +1,8 @@
 package com.csye6220.carrentalsystem.dao;
 
+import com.csye6220.carrentalsystem.model.Car;
+import com.csye6220.carrentalsystem.model.CarType;
+import com.csye6220.carrentalsystem.model.Location;
 import com.csye6220.carrentalsystem.model.Reservation;
 import com.csye6220.carrentalsystem.model.User;
 
@@ -19,5 +22,9 @@ public interface UserDAO {
     void delete(int userID);
 
     List<User> getAllUsers();
+	List<Car> getCarsByLocation(Location location);
+	List<Car> getCarsByCarType(CarType carType);
+	List<User> getAllCustomers();
+	List<User> getAllAgencies();
 
 }

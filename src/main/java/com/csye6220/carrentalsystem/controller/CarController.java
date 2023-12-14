@@ -3,6 +3,8 @@ package com.csye6220.carrentalsystem.controller;
 import java.util.List; 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +21,10 @@ import com.csye6220.carrentalsystem.model.Car;
 import com.csye6220.carrentalsystem.model.CarType;
 import com.csye6220.carrentalsystem.model.Location;
 import com.csye6220.carrentalsystem.model.Reservation;
+import com.csye6220.carrentalsystem.model.User;
+import com.csye6220.carrentalsystem.model.UserRole;
 import com.csye6220.carrentalsystem.service.CarService;
+import com.csye6220.carrentalsystem.service.UserService;
 
 
 
@@ -29,6 +34,9 @@ public class CarController {
 	 
 	@Autowired
 	private CarService carService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@GetMapping("/add") 
 	public String getCarAddForm() {
@@ -47,6 +55,11 @@ public class CarController {
     ) {
         Car car = new Car(carMake, carModel, carYear, CarType.valueOf(carType), registrationNumber, availability, Location.valueOf(location));
         carService.createCar(car);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName();
+	    User user = userService.getUserByUsername(username);
+	    user.getFleet().add(car);
+	    userService.update(user);
         return "redirect:/cars/all";
     }
  
@@ -91,6 +104,13 @@ public class CarController {
 
     @GetMapping("/delete/{carID}")
     public String deleteCar(@PathVariable int carID) {
+
+	    for (User user : userService.getAllAgencies()) {
+            List<Car> fleet = user.getFleet();
+            fleet.removeIf(cars -> cars.getCarID() == carID);
+            user.setFleet(fleet);
+       	 	userService.update(user);
+        }	    
         Car car = carService.getCarByID(carID);
         carService.delete(car);
         return "redirect:/cars/all";
@@ -99,7 +119,20 @@ public class CarController {
     @GetMapping("/all")
     public ModelAndView getAllCars(@ModelAttribute("locations") Location[] locations) {
         ModelAndView modelAndView = new ModelAndView("view_all_cars");
-        List<Car> cars = carService.getAllCars();
+        
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName();
+	    User user = userService.getUserByUsername(username);
+	    
+        List<Car> cars;
+        
+	    if(user.getRole() == UserRole.AGENCY_STAFF) {
+	    	cars = user.getFleet();
+	    } else{
+	    	cars = carService.getAllCars();
+	    }
+
+        modelAndView.addObject("role", user.getRole().name());
         modelAndView.addObject("locations", locations);
         modelAndView.addObject("filteredCars", cars);
         return modelAndView;
@@ -113,11 +146,23 @@ public class CarController {
     @GetMapping("/byCarType")
     public String getCarsByCarType(@RequestParam(required = false) CarType carType, Model model) {
         List<Car> filteredCars;
-        if (carType != null) {
-            filteredCars = carService.getCarsByCarType(carType);
-        } else {
-            filteredCars = carService.getAllCars();
-        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName();
+	    User user = userService.getUserByUsername(username);
+        if(user.getRole() == UserRole.AGENCY_STAFF) {
+	    	 if (carType != null) {
+	             filteredCars = userService.getCarsByCarType(carType);
+	         } else {
+	             filteredCars = user.getFleet();
+	         }
+	    } else{
+	    	if (carType != null) {
+	            filteredCars = carService.getCarsByCarType(carType);
+	        } else {
+	            filteredCars = carService.getAllCars();
+	        }
+	    }
+        model.addAttribute("role", user.getRole().name());
         model.addAttribute("filteredCars", filteredCars);
         return "view_all_cars";
     }
@@ -130,11 +175,24 @@ public class CarController {
     @GetMapping("/byLocation")
     public String getCarsByLocation(@RequestParam(required = false) Location location, Model model) {
         List<Car> filteredCars;
-        if (location != null) {
-            filteredCars = carService.getCarsByLocation(location);
-        } else {
-            filteredCars = carService.getAllCars();
-        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName();
+	    User user = userService.getUserByUsername(username);
+	    
+	    if(user.getRole() == UserRole.AGENCY_STAFF) {
+	    	 if (location != null) {
+		            filteredCars = userService.getCarsByLocation(location);
+		        } else {
+		            filteredCars = user.getFleet();
+		        }
+	    } else{
+	    	if (location != null) {
+	            filteredCars = carService.getCarsByLocation(location);
+	        } else {
+	            filteredCars = carService.getAllCars();
+	        }
+	    }
+	    model.addAttribute("role", user.getRole().name());
         model.addAttribute("filteredCars", filteredCars);
         return "view_all_cars";
     }  

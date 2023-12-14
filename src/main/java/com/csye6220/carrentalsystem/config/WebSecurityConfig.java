@@ -39,12 +39,9 @@ public class WebSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
       http.authorizeHttpRequests(
               (authorize) -> authorize
-              			.requestMatchers("*/**").permitAll()
-//                        .requestMatchers("*/**", "/cars/**", "/cars/all", "/users/add", "/login").permitAll()
-//         				.requestMatchers("/users/edit", "/users/**").hasAnyAuthority("CUSTOMER","ADMIN", "AGENCYSTAFF")
-//         				.requestMatchers("/cars/add", "cars/delete/**", "/cars/edit/*", "/rental-agencies", "/users").hasAnyAuthority("ADMIN", "AGENCYSTAFF")
-//         				.requestMatchers("/", "/cars", "/rental-agencies/add", "/rental-agencies/delete/**", "/rental-agencies/add", "/users").hasAnyAuthority("ADMIN")
-                      .anyRequest().authenticated()
+              			.requestMatchers("/", "/user", "*/all", "*/byCarType", "*/byLocation", "/error", "/login", "/logout", "/reservations/**", "/users", "/cars/**", "/rental-agencies/**").permitAll()
+                        .requestMatchers("*/add", "/cars/edit/**", "/cars/all").hasAnyAuthority("ADMIN", "AGENCYSTAFF")
+         				.anyRequest().authenticated()
       )
               .httpBasic(Customizer.withDefaults())
               .formLogin((form) -> form

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>All Cars</title>
@@ -26,12 +25,12 @@
     	<button type="submit">Search</button>
 	 </form>
 		<div th:if="${error}">
-        <p th:text="${error}" style="color:red"></p>
+        	<p th:text="${error}" style="color:red"></p>
 		</div>
-     <div th:if="${success}">
-        <p th:text="${success}" style="color:greenyellow"></p>
-	 </div>
-		<div sec:authorize="hasAnyAuthority('AGENCY_STAFF', 'ADMIN')">
+	     <div th:if="${success}">
+	        <p th:text="${success}" style="color:greenyellow"></p>
+		 </div>
+		<div th:if="${role == 'AGENCY_STAFF' or role == 'ADMIN'}">
           	<a th:href="@{/cars/add}" class="btn btn-primary">Add New Car</a>
         </div> 
     <table border="1">
@@ -57,25 +56,20 @@
                 <td th:text="*{car.availability}"></td>
                 <td th:text="*{car.location}"></td>
                 <td>
-					<a th:href="@{/cars/{carID}(carID=${car.carID})}" class="btn btn-primary">Reserve</a>
+					<a th:href="@{/cars/{carID}(carID=${car.carID})}" class="btn btn-primary"
+						th:if="${role == 'CUSTOMER'}">Reserve</a>
                     <span> | </span>
-                    <a sec:authorize="hasAnyAuthority('AGENCY_STAFF', 'ADMIN')"
-                    	 th:href="@{/cars/edit/{carID}(carID=${car.carID})}" class="btn btn-primary">Edit</a>
+                    <a th:href="@{/cars/edit/{carID}(carID=${car.carID})}" class="btn btn-primary" 
+                    	th:if="${role == 'AGENCY_STAFF' or role == 'ADMIN'}">Edit</a>
                     <span> | </span>
-                    <a sec:authorize="hasAnyAuthority('AGENCY_STAFF', 'ADMIN')"
-                    	 th:href="@{/cars/delete/{carID}(carID=${car.carID})}" class="btn btn-primary">Delete</a>
+                    <a th:href="@{/cars/delete/{carID}(carID=${car.carID})}" class="btn btn-primary"
+                    	th:if="${role == 'AGENCY_STAFF' or role == 'ADMIN'}">Delete</a>
                 </td>
             </tr>
         </tbody>
     </table>
-    <div sec:authorize="hasAnyAuthority('CUSTOMER')">
-    	<a th:href="@{/user}" class="btn btn-primary">Back to Customer Portal</a>
-    </div> 
-    <div sec:authorize="hasAnyAuthority('AGENCY_STAFF')">
-       	<a th:href="@{/agencyStaff}" class="btn btn-primary">Back to Agency portal</a>
-    </div> 
-    <div sec:authorize="hasAnyAuthority('ADMIN')">
-       	<a th:href="@{/adminPortal}" class="btn btn-primary">Back to Admin Portal</a>
-    </div> 
+    <div>
+    	<a th:href="@{/user}" class="btn btn-primary">Back to Portal</a>
+    </div>
 </body>
 </html>

@@ -34,7 +34,7 @@ public class Car {
     @Enumerated(EnumType.STRING)
     private Location location;
     
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "car", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Reservation> reservations;
     
     public Car () {}  

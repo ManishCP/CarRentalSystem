@@ -30,9 +30,9 @@
 <div class="container dashboard-container">
     <div class="welcome-section">
         <h2>Welcome,<span sec:authentication="name">Username</span></h2>
-        <a href="/users/edit" class="btn btn-primary">Update Profile</a>
+        <a href="/users/update" class="btn btn-primary">Update Profile</a>
         
-        <form th:action="@{/logout}" method="post">
+        <form th:action="@{/logout}" method="get">
     		<input type="submit" value="Logout" />
 		</form>
     </div>

@@ -36,10 +36,10 @@ public class User implements UserDetails {
 	@Enumerated(EnumType.STRING)
 	private UserRole role;
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     private List<Reservation> reservations = new ArrayList<>();
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     @OrderColumn(name = "fleet")
     private List<Car> fleet; 
 	
@@ -108,6 +108,16 @@ public class User implements UserDetails {
 
 	public void setRole(UserRole role) {
 		this.role = role;
+	}
+	
+	
+
+	public List<Car> getFleet() {
+		return fleet;
+	}
+
+	public void setFleet(List<Car> fleet) {
+		this.fleet = fleet;
 	}
 
 	@Override
