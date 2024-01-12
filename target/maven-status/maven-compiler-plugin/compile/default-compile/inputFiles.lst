@@ -11,7 +11,6 @@ D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\model
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\model\Location.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\dao\CarDAO.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\service\CarService.java
-D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\controller\GlobalUserController.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\dao\ReservationDAO.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\controller\CarController.java
 D:\STS Projects\carrentalsystem\src\main\java\com\csye6220\carrentalsystem\CarrentalsystemApplication.java

@@ -20,55 +20,44 @@ import com.csye6220.carrentalsystem.service.UserService;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    private final UserService userService;
+	private final UserService userService;
 
-    public WebSecurityConfig(UserService userService) {
-        this.userService = userService;
-    }
+	public WebSecurityConfig(UserService userService) {
+		this.userService = userService;
+	}
 
-    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
-    }
-    
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+	}
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-      http.authorizeHttpRequests(
-              (authorize) -> authorize
-              			.requestMatchers("/", "/user", "*/all", "*/byCarType", "*/byLocation", "/error", "/login", "/logout", "/reservations/**", "/users", "/cars/**", "/rental-agencies/**").permitAll()
-                        .requestMatchers("*/add", "/cars/edit/**", "/cars/all").hasAnyAuthority("ADMIN", "AGENCYSTAFF")
-         				.anyRequest().authenticated()
-      )
-              .httpBasic(Customizer.withDefaults())
-              .formLogin((form) -> form
-                      .loginPage("/login")
-                      .permitAll()
-                      .loginProcessingUrl("/login")
-                      .defaultSuccessUrl("/user", true)
-                      .failureHandler((request, response, exception) -> {
-                    	  System.out.println(exception.getMessage());
-                          String errorMessage;
-                          if (exception instanceof UsernameNotFoundException) {
-                              errorMessage = "User not found";
-                          } else if (exception instanceof BadCredentialsException) {
-                              errorMessage = "Invalid password";
-                          } else {
-                              errorMessage = "Authentication failed";
-                          }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-                      request.getSession().setAttribute("error", errorMessage);
-              new DefaultRedirectStrategy().sendRedirect(request, response, "/login?error=true");
-          })
-  )
-  .logout((logout) -> logout
-          .permitAll()
-          .logoutUrl("/")
-  );
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/").permitAll()
+//              			.requestMatchers("/", "/user", "*/all", "*/byCarType", "*/byLocation", "/error", "/login", "/logout", "/reservations/**", "/users", "/cars/**", "/rental-agencies/**").permitAll()
+//                        .requestMatchers("*/add", "/cars/edit/**", "/cars/all").hasAnyAuthority("ADMIN", "AGENCYSTAFF")
+				.anyRequest().authenticated()).httpBasic(Customizer.withDefaults())
+				.formLogin((form) -> form.loginPage("/login").permitAll().loginProcessingUrl("/login")
+						.defaultSuccessUrl("/user", true).failureHandler((request, response, exception) -> {
+							System.out.println(exception.getMessage());
+							String errorMessage;
+							if (exception instanceof UsernameNotFoundException) {
+								errorMessage = "User not found";
+							} else if (exception instanceof BadCredentialsException) {
+								errorMessage = "Invalid password";
+							} else {
+								errorMessage = "Authentication failed";
+							}
 
-      	return http.build();
-  }
+							request.getSession().setAttribute("error", errorMessage);
+							new DefaultRedirectStrategy().sendRedirect(request, response, "/login?error=true");
+						}))
+				.logout((logout) -> logout.permitAll().logoutUrl("/"));
+
+		return http.build();
+	}
 }
